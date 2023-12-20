@@ -1,8 +1,8 @@
 # 날씨API를 활용한 여행 계획 생성 및 머신러닝 기반 유저 추천 서비스
 
 ## Project Talaria
-### Team Name:  트래비앙
-### Team Member
+#### Team Name:  트래비앙
+#### Team Member
 - [Leejs-1014](https://github.com/Leejs-1014) : AI 개발, 백엔드 개발, 프론트엔드 개발, 데이터베이스 구축
 - [idgod8451](https://github.com/idgod8451) : 백엔드 개발, 프론트엔드 개발, 서버 구축
 - [NoelWON](https://github.com/NoelWON) : 백엔드 개발, 프론트엔드 개발, 데이터베이스 구축
@@ -26,7 +26,7 @@
 ## Settings
 - All API KEYs and other passwords were deleted. You must use your own Keys, ID and Password
 
-### Spring: STS4 => application.properties
+#### Spring: STS4 => application.properties
 - need to create MySQL DB named 'project'
 - need MongoDB installed, DB name 'test'
 - need MySQL ID & Password
@@ -34,10 +34,10 @@
 - need [Google Map Api Key](https://mapsplatform.google.com/)
 - need [OpenWeatherMap Api Key](https://openweathermap.org/api) -> WeatherByGPSApplication.java
 
-### Django = VS code
+#### Django = VS code
 - need [Google Map Api Key](https://mapsplatform.google.com/)
 
-### Android: Android Studio => local.properties (SDK Location)
+#### Android: Android Studio => local.properties (SDK Location)
 ###### Please follow the instructions below
 1. Go to your Project then Create a file with the following name: local.properties
 2. Open the file and write the followings below:
