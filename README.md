@@ -39,7 +39,7 @@
 
   
 ## Project Result
-- '2023년 벤처·스타트업 아카데미 통합 프로젝트 발표회' 최우수상 수상
+'2023년 벤처·스타트업 아카데미 통합 프로젝트 발표회' 최우수상 수상
 ![project_result](./z_imgs/project_result.jpg)
 
 
