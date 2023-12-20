@@ -60,10 +60,12 @@
 1. start Android Studio
 2. Go to your Project(Android) and Create a file with the following name: local.properties
 3. Open the file(local.properties) and write the followings below:
-  - sdk.dir=C\:\\Users\\your_UserName_directory\\AppData\\Local\\Android\\Sdk
-  - GOOGLE_MAPS_API_KEY=Your_Google_Maps_Api_Key_Here
-  - BASE_URL=http://Your_IP_Address:8080/m/
-  - BASE_BOARD_SUMMERNOTE=http://Your_IP_Address:8080/
+'''Kotlin
+sdk.dir=C\:\\Users\\your_UserName_directory\\AppData\\Local\\Android\\Sdk
+GOOGLE_MAPS_API_KEY=Your_Google_Maps_Api_Key_Here
+BASE_URL=http://Your_IP_Address:8080/m/
+BASE_BOARD_SUMMERNOTE=http://Your_IP_Address:8080/
+'''
 
   
 ## References
