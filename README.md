@@ -69,7 +69,7 @@ BASE_BOARD_SUMMERNOTE=http://Your_IP_Address:8080/
 
   
 ## References
-- 참고 자료
+#### 참고 자료
   + [Google Maps Platform](https://mapsplatform.google.com/)
   + [Google Codelabs](https://codelabs.developers.google.com/)
   + [android-maps-compose](https://googlemaps.github.io/android-maps-compose/index.html)
@@ -81,5 +81,5 @@ BASE_BOARD_SUMMERNOTE=http://Your_IP_Address:8080/
   + [OpenWeatherMap API](https://openweathermap.org/)
   + [점프 투 스프링부트 (위키독스)](https://wikidocs.net/book/7601)
   + [JDK 17 Documentation](https://docs.oracle.com/en/java/javase/17/docs/api/index.html)
-- 참고 서적
+#### 참고 서적
   + 안드레아스 뮐러, 세라 가이도 「파이썬 라이브러리를 활용한 머신러닝」 한빛 미디어
