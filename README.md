@@ -1,6 +1,6 @@
-# 날씨API를 활용한 여행 계획 생성 및 머신러닝 기반 유저 추천 서비스
+# Project Talaria
 
-## Project Talaria
+## 날씨API를 활용한 여행 계획 생성 및 머신러닝 기반 유저 추천 서비스
 #### Team Name:  트래비앙
 #### Team Member
 - [Leejs-1014](https://github.com/Leejs-1014) : AI 개발, 백엔드 개발, 프론트엔드 개발, 데이터베이스 구축
