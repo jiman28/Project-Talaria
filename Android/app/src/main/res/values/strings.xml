@@ -1,0 +1,73 @@
+<resources>
+    <string name="app_name">ProjectTravel</string>
+
+    <!--Page Enum class-->
+    <string name="pageTest">TestTestTestTestTestTestTest</string>
+    <string name="pageTest2">TestTestTestTestTestTestTest</string>
+    <string name="pageLogin">Login page</string>
+    <string name="pageSignIn">SignIn page</string>
+    <string name="pageSignInComplete">Interest Check page</string>
+    <string name="pageTestDS">Data Store test page</string>
+    <string name="page1">Homepage</string>
+    <string name="pageUser">View Your Infos</string>
+    <string name="pageUserPlans">View Your Plans</string>
+    <string name="pageEditUser">Edit Your Info</string>
+    <string name="pageUsersLike">View Peoples like me</string>
+    <string name="page2">Select Your Tour Attractions</string>
+    <string name="pageGps">Search GPS</string>
+    <string name="page3">Plan Your Trip</string>
+    <string name="pageRoute">Search GPS</string>
+    <string name="page4">Boards</string>
+    <string name="pageViewBoard">View Board</string>
+    <string name="pageWriteBoard">Write Board</string>
+    <string name="pageEditBoard">Edit Board</string>
+
+    <!--Buttons-->
+    <string name="back_button">BACK</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="reset_button">Reset</string>
+    <string name="next_button">Next</string>
+    <string name="close_button">Close</string>
+    <string name="confirm_button">Confirm</string>
+    <string name="complete_button">Complete</string>
+    <string name="send_button">Send Plan to DB</string>
+    <string name="confirm_button_kor">확인</string>
+
+    <!--ShowCountryInfos-->
+    <string name="loading_failed">Failed to load</string>
+    <string name="retry">Retry</string>
+    <string name="loading">loading</string>
+    <string name="title_paren">%s (%s)</string>
+    <string name="title_colon">%s : %s</string>
+
+    <!--Board -->
+<!--    <string name="board">board</string>-->
+<!--    <string name="company">company</string>-->
+<!--    <string name="trade">trade</string>-->
+<!--    <string name="reply">reply</string>-->
+
+    <!--Board SearchType -->
+    <string name="selectSearchType"></string>
+    <string name="title">title</string>
+    <string name="content">content</string>
+    <string name="writeuser">writeuser</string>
+
+    <!--Board tabTitle & Write -->
+    <string name="selectTabTitle">게시판을 선택하세요</string>
+    <string name="boardTabTitle">리뷰모음</string>
+    <string name="companyTabTitle">동행자구인</string>
+    <string name="tradeTabTitle">거래시스템</string>
+    <string name="replyTitle">Comments</string>
+
+    <string name="noSearchFound">검색 결과가 없습니다.</string>
+    <string name="noArticlesFound">게시글이 없습니다.</string>
+
+    <!--User -->
+    <string name="userTabMenuBoard">작성한 게시물</string>
+    <string name="userTabMenuPlans">저장한 여행 계획</string>
+    <string name="userPageOn">On</string>
+    <string name="userPageOff">Off</string>
+
+    <string name="noPlansFound">여행 계획이 아직 없습니다.</string>
+
+</resources>

@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이 페이지</title>
+    <!-- 구글폰트 시작 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <!-- 구글폰트 끝 -->
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <!-- 부트스트랩 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <script th:inline="javascript">
+        function remove(t) {
+            frm = t.parentElement
+            frm.action =/*[[@{/project/remove}]]*/
+                console.log(frm);
+            frm.submit();
+        }
+
+        function edit(t) {
+            frm = t.parentElement
+            frm.action =/*[[@{/project/planEdit}]]*/
+                console.log(frm);
+            frm.submit();
+        }
+
+    </script>
+
+    <style>
+        .box {
+            width: 200px;
+            height: 200px;
+            border-radius: 70%;
+            overflow: hidden;
+            margin: auto;
+        }
+
+        .profile {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .divs {
+            text-align: center;
+            margin-top: 300px;
+        }
+
+        .divOne {
+            display: flex;
+            justify-content: space-between;
+
+        }
+
+        .spans {
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        .plans {
+            height: 60px;
+            background: linear-gradient(to right, rgb(21, 108, 240), lightblue);
+            border-bottom: 1px solid #ccc;
+            font-weight: bold;
+            color: white;
+            font-size: 25px;
+            border-radius: 25px;
+        }
+
+        /* .container {
+            width: 500px;
+            margin: 20px auto;
+        } */
+
+
+
+        .tab_title li.on {
+            background-color: #0d6efd;
+            font-weight: bold;
+        }
+
+
+
+        .tab_title {
+            display: flex;
+            /* 탭 버튼을 플렉스 컨테이너로 만듭니다. */
+            justify-content: space-between;
+            /* 버튼을 균등하게 분배합니다. */
+            list-style: none;
+            /* 목록 불릿을 제거합니다. */
+            padding: 0;
+            /* 기본 패딩을 제거합니다. */
+            margin: 0;
+            /* 기본 마진을 제거합니다. */
+        }
+
+        .KIN {
+            word-break: break-all;
+            margin: 0;
+            font-family: Noto Sans KR, Helvetica, sans-serif;
+            border: 0;
+            cursor: pointer;
+            position: relative;
+            background-color: transparent;
+            outline: 0;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            padding: 0 15px;
+            font-size: 14px;
+            color: #d5d5d5;
+        }
+
+        #KIN {
+            display: block;
+        }
+
+        .img {
+            margin-top: 150px;
+        }
+
+        .jb-division-line {
+            border-top: 2px solid #444444;
+            margin: 30px 0px;
+        }
+
+
+        .boxs {
+            width: 50px;
+            height: 50px;
+            border-radius: 70%;
+            overflow: hidden;
+            margin: 10px;
+            margin-left: -10px;
+
+        }
+
+
+        .profiles {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+
+        }
+
+        .card-img-top {
+            width: 283px;
+            height: 200px;
+            margin: 2px;
+        }
+
+        .spans {
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        .divsa {
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+
+        #navbarNav {
+            display: flex;
+            justify-content: center;
+        }
+
+
+        .divsa .draggable {
+            border-bottom: 2px solid #cccccc81;
+            /* 밑줄 스타일 및 색상을 설정합니다. */
+
+        }
+
+        .weather {
+            height: 60px;
+            background: linear-gradient(to right, rgb(21, 108, 240), lightblue);
+            border-bottom: 1px solid #ccc;
+            font-weight: bold;
+            color: white;
+            font-size: 25px;
+            border-radius: 25px;
+        }
+
+        .card {
+            margin: 10px;
+            border: none;
+            /* 테두리 없애기 */
+            border-radius: 30px;
+            /* 테두리 둥글게 */
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            /* 그림자 효과 */
+            width: 18rem;
+            display: inline-flex;
+
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .card-title,
+        .card-weather {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: rgb(83, 137, 219);
+            text-align: center;
+        }
+
+
+
+        /* 스위치의 크기 조정 */
+        .form-switch .form-check-input {
+            width: 50px;
+            /* 스위치의 가로 크기를 조절하세요. */
+            height: 30px;
+            /* 스위치의 세로 크기를 조절하세요. */
+        }
+
+        .form-switch {
+            position: relative;
+            display: inline-block;
+            width: 45px;
+            height: 30px;
+            left: 70px;
+            top: 18px;
+        }
+
+        .form-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .form-switch .form-check-label {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 6;
+            bottom: 0;
+            height: 12px;
+            background-color: #fff;
+            box-shadow: 1px 1px 3px #eaeaea, -1px -1px 3px #eaeaea;
+            border-radius: 20px;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .form-switch .form-check-label:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 0px;
+            top: -5px;
+            background-image: url("https://cdn-icons-png.flaticon.com/512/7687/7687029.png");
+            background-size: 15px;
+            background-position: center;
+            background-color: #fff;
+            background-repeat: no-repeat;
+            -webkit-transition: .5s;
+            transition: .4s;
+            border-radius: 20px;
+            box-shadow: 1px 1px 3px #eaeaea;
+
+        }
+
+        .form-switch input:checked+.form-check-label {
+            background-color: #ffffff;
+            box-shadow: 1px 1px 3px #eaeaea, -1px -1px 3px #eaeaea;
+        }
+
+        .form-switch input:checked+.form-check-label:before {
+            background-image: url("https://cdn-icons-png.flaticon.com/512/1809/1809714.png");
+            background-color: #ffffff;
+            box-shadow: 1px 1px 3px #eaeaea;
+            -webkit-transform: translateX(16px);
+            -ms-transform: translateX(16px);
+            transform: translateX(16px);
+        }
+
+        .form-check.form-switch {
+            transform: scale(2.0);
+            /* 원하는 크기로 확대합니다. */
+        }
+
+        .plandiv {
+
+            position: relative;
+            width: 300px;
+            margin-left: 760px;
+            margin-top: 100px;
+        }
+
+        .planinput {
+            font-size: 15px;
+            color: #222222;
+            width: 300px;
+            border: none;
+            border-bottom: solid #aaaaaa 1px;
+            padding-bottom: 10px;
+            padding-left: 10px;
+            position: relative;
+            background: none;
+            z-index: 5;
+        }
+
+        .planinput::placeholder {
+            color: #aaaaaa;
+        }
+
+        .planinput:focus {
+            outline: none;
+        }
+
+        .planspan {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0%;
+            /* right로만 바꿔주면 오 - 왼 */
+            background-color: #666;
+            width: 0;
+            height: 2px;
+            border-radius: 2px;
+            transition: 0.5s;
+        }
+
+        .planlabel {
+            position: absolute;
+            color: #aaa;
+            left: 10px;
+            font-size: 20px;
+            bottom: 8px;
+            transition: all .2s;
+        }
+
+        .planinput:focus~.planlabel,
+        .planinput:valid~.planlabel {
+            font-size: 16px;
+            bottom: 40px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .planinput:focus~.planspan,
+        input:valid~.planspan {
+            width: 100%;
+        }
+
+
+
+
+
+
+        .modal-content {
+            width: 1500px;
+            padding: 20px;
+            overflow: scroll;
+            /* 가로 스크롤 */
+            overflow: auto;
+            white-space: nowrap;
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background-color: #3c77f560;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(transparent, #3c77f5, transparent);
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background-color: lightblue;
+            border-radius: 10px;
+            box-shadow: inset 0px 0px 5px white;
+        }
+
+        .planBtn {
+            display: block;
+            position: fixed;
+            margin-top: 80px;
+        }
+
+        #loading {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+            display: block;
+            background: #ededed;
+            opacity: 0.7;
+            z-index: 99;
+            text-align: center;
+        }
+
+        #loading>#loading_bar {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 100;
+            transform: translate(-50%, -50%);
+        }
+
+        .backgroundimg {
+            background: url('/img/dddd.jpg');
+            background-size: cover;
+            background-position-y: 60%;
+        }
+
+        /* 구글 폰트 적용 파트 */
+        .tbl_board {
+            font-family: 'Jua', sans-serif;
+            width: 100%;
+            border-collapse: collapse;
+
+            text-align: center;
+            color: #222;
+        }
+
+        .getUsers {
+            font-family: 'Jua', sans-serif;
+        }
+
+        .userup {
+            font-family: 'Jua', sans-serif;
+        }
+
+        .divs {
+            font-family: 'Jua', sans-serif;
+        }
+
+        /* 구글 폰트 적용 파트 */
+
+        .card-containers:hover {
+            transform: scale(1.1);
+            transition: transform 0.5s;
+
+            .card-img-top {
+                filter: brightness(70%);
+            }
+        }
+
+        .stext {
+            position: absolute;
+            top: 50%;
+            /* 이미지 중앙에 텍스트 정렬 */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* 텍스트 중앙 정렬을 위한 이동 */
+            color: white;
+            /* 텍스트 색상 설정 */
+            padding: 5px;
+            /* 텍스트 주변 여백 설정 */
+            text-align: center;
+            opacity: 0;
+            /* 초기에는 숨김 */
+            transition: opacity 0.5s;
+            font-size: 150%;
+        }
+
+        .card:hover .stext {
+            opacity: 1;
+            /* 호버 시 텍스트 나타남 */
+        }
+
+        .screen_out {
+            /* font-family: Noto Sans KR, Helvetica, sans-serif; */
+            font-family: 'Vina Sans', sans-serif;
+            font-size: 100px;
+        }
+
+        #tagtbl {
+            height: 50px;
+            color: antiquewhite;
+            font-size: 20px;
+        }
+
+        .col-md-6 {
+            margin: auto auto auto 7%;
+        }
+
+        .center-btn {
+            width: 100px;
+        }
+
+        .img-btn {
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            right: 10px;
+            bottom: 150px;
+            border: none;
+            border-radius: 10px;
+
+        }
+
+        .img-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+    <nav th:replace="~{nav :: navbarFragment}"></nav>
+    <br>
+    <br>
+    <br>
+
+    <input type="hidden" th:value="${userInfo}" id="userInterest">
+
+    <div class="backgroundimg" style="width: 100%; height: 270px; z-index: -10; overflow: visible;">
+
+        <div class="divOne" style="overflow: visible;">
+
+            <div></div>
+            <div class="divs img" style="display: inline-block;  padding-left: 200px; position: relative; ">
+                <div class="box" style="background: #BDBDBD; display: inline-flex;">
+                    <img class="profiles userPicture" th:src="${userOne.picture}">
+
+                </div>
+
+                <button type="button" class="img-btn" data-bs-toggle="modal" data-bs-target="#userEdit">
+                    <img class="img-img"
+                        src="https://img.freepik.com/premium-vector/gear-icons-vector-logo-design-cogwheel_654297-180.jpg">
+                </button>
+
+                <div class="modal" id="userEdit">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content">
+                            <form th:action="@{@{/project/deactivate}}" method="post" name="userEditForm">
+                                <div class="modal-header">
+                                    <h5>회원정보 수정</h5>
+                                    <button type="button" class="btn btn-outline-success" id="imgEdit"
+                                        style="position: absolute; right: 150px;">사진 변경</button>
+
+                                    <div class="input-group mb-3" style="display: none;">
+                                        <span class="input-group-text">비밀번호</span>
+                                        <input type="hidden" />
+                                        <input type="password" class="form-control" placeholder="password"
+                                         onkeydown="checkPass(event,userEditForm)" id="password" />
+                                    </div>
+
+                                    <button type="button" class="btn btn-outline-danger" onclick="removeBtn(this)">계정
+                                        삭제</button>
+                                    <button type="submit" class="btn btn-outline-danger" style="display: none;"
+                                    onclick="removeForm(userEditForm)">계정 삭제</button>
+                                </div>
+
+                                <div class="modal-body" style=" position:relative;">
+
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">이메일</span>
+                                        <input type="hidden" name="email" th:value="${userOne.email}">
+                                        <input type="text" class="form-control" placeholder="email" name="formEmail"
+                                            th:value="${userOne.email}" disabled>
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">가입 날짜</span>
+                                        <input type="text" class="form-control" placeholder="joinDate"
+                                            name="formjoinDate" th:value="${userOne.name}" disabled>
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">이름</span>
+                                        <input type="hidden" name="formUserName">
+                                        <input type="text" class="form-control" placeholder="Username"
+                                            th:value="${userOne.name}" disabled>
+                                        <button type="button" class="btn btn-outline-success"
+                                            onclick="editBtn(this)">변경</button>
+                                        <button type="button" class="btn btn-outline-primary" style="display: none;"
+                                            onclick="editSave()">저장</button>
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">비밀번호</span>
+                                        <input type="hidden" name="formPassword">
+                                        <input type="password" class="form-control" placeholder="password" value="비밀번호"
+                                            disabled>
+                                        <button type="button" class="btn btn-outline-success"
+                                            onclick="editBtn(this)">변경</button>
+                                        <button type="button" class="btn btn-outline-primary" style="display: none;"
+                                            onclick="editSave()">저장</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    let next;
+                    let previous;
+                    let myThis;
+
+                    function editBtn(t) {
+                        myThis = t;
+                        next = t.nextElementSibling;
+                        previous = t.previousElementSibling;
+                        console.log(next);
+                        console.log(previous);
+                        myThis.style.display = 'none';
+                        next.style.display = 'table-row';
+                        previous.disabled = false;
+                    }
+
+                    function editSave() {
+                        let formUserName = document.getElementsByName("formUserName")[0];
+                        formUserName.value = previous.value;
+
+                        myThis.style.display = 'table-row';
+                        next.style.display = 'none';
+                        previous.disabled = true;
+                    }
+
+                    function removeBtn(t) {
+                        next = t.nextElementSibling;
+                        previous = t.previousElementSibling;
+                        t.style.display = 'none';
+                        next.style.display = 'table-row';
+                        previous.style.display = '';
+                        previous.style.width = 'auto'
+                        previous.style.position = 'absolute'
+                        previous.style.right = '150px'
+                        previous.style.top = '35px'
+                        document.getElementById("imgEdit").style.display = 'none'
+                    }
+
+
+                    async function checkPass(event,frm) {
+                        if (event.keyCode === 13) {
+                            event.preventDefault();
+                        const option = {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ "pass": document.getElementById("password").value })
+                        };
+                        await fetch("/project/checkPass", option)
+                            .then((response) => response.json()).then((key) => {
+                                console.log(key['key']);
+                                if(key['key']){
+                                    console.log(key['key']);
+                                    frm.submit();
+                                }else{
+                                    console.log(key['key']);
+                                    alert("비밀번호가 일치하지 않습니다");
+                                }
+                            })
+
+                            .catch((error) => console.log("error:", aaa));
+                    };
+                }
+
+                function removeForm(frm){
+                    frm.submit();
+                }
+                </script>
+
+                <h4 class="userup">[[${userOne.name}]]</h4>
+                <p class="userup">[[${userOne.email}]]</p>
+                <input type="hidden" id="userId" th:value="${userOne.id}">
+                <button type="button" class="btn btn-primary getUsers"> 비슷한 유저 </button>
+            </div>
+
+            <div class="divs" style="display: inline-block;">
+                <button type="button" class="clickboard btn btn-outline-warning center-btn"
+                    style="cursor: pointer; font-size: 25px;">게시글<h5 style=" cursor: pointer; color: black;">
+                        [[${boardSize}]]</h5></button>
+
+                <br>
+                <br>
+                <button type="button" class="clickplan btn btn-outline-info center-btn"
+                    style="cursor: pointer; font-size: 25px;">계획<h5 class="clickplanlist"
+                        style=" font-family: 'Jua', sans-serif; cursor: pointer; color: black;">
+                        [[${#lists.size(userPlan)}]]</h5></button>
+
+            </div>
+
+
+            <div class="divs" id="btnDiv" role="button" style="display: inline-block; padding-right: 100px;"
+                data-bs-toggle="modal" href="#canvas" attr="canvas">
+                <canvas id="radar-chart" width="550px" height="180px"
+                    style="text-align: center; display: block; width: 550px; height: 180px;  display: inline-block; cursor: pointer;">
+                </canvas>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <hr>
+
+    <form th:action="@{/project/mypage}" method="get" id="searchForm" th:if="${authority}">
+        <input type="hidden" id="page2" name="page" th:value="${boardList.number}">
+        <input type="hidden" id="youEmail" name="youEmail" th:value="${userOne.email}">
+    </form>
+
+    <form th:action="@{/project/youpage}" method="get" id="searchForm" th:if="!${authority}">
+        <input type="hidden" id="page2" name="page" th:value="${boardList.number}">
+        <input type="hidden" id="youEmail" name="youEmail" th:value="${userOne.email}">
+    </form>
+
+
+
+
+    <!-- 게시글 -->
+    <div class="col-md-6" style="margin: auto; width: 80%;">
+        <div class="board" style="width: 80%; margin: auto;" name="BoardList" th:if="${boardSize} != 0">
+            <table class="tbl_board" align="center" border="1" width="80%">
+                <thead>
+                    <tr height="10" align="center" bgcolor="#0d6efd" style="color: antiquewhite;">
+                        <th style="color: aliceblue;">글번호</th>
+                        <th style="color: aliceblue;">작성자</th>
+                        <th style="color: aliceblue;">제목</th>
+                        <th style="color: aliceblue;">작성일</th>
+                        <th style="color: aliceblue;">조회수</th>
+                        <th style="color: aliceblue;">타입</th>
+                    </tr>
+                </thead>
+
+
+
+                <tbody>
+                    <tr align="center" th:each="article:${boardList}" style="border: 1px solid black;">
+                        <td width="5%">[[${articleStat.count}]]</td>
+                        <td width="15%">[[${article.user.getName()}]]</td>
+                        <td align="left" width="35%">
+
+                            <form th:action="@{/board/view}" method="get" name="frm">
+                                <input type="hidden" name="tabtitle" th:value="${article.type}">
+                                <input type="hidden" name="no" th:value="${article.articleNo}">
+                                <span type="text" onclick="view(this)"
+                                    style="justify-content:center; cursor: pointer;">[[${article.title}]]</span>
+                            </form>
+                        </td>
+                        <td width="10%" th:text="${#temporals.format(article.writeDate, 'yyyy-MM-dd')}"></td>
+                        <td width="8%">[[${article.views}]]</td>
+                        <td width="8%">[[${article.type}]]</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+            <!-- 페이징 -->
+            <br>
+            <div id="KIN" th:if="${!boardList.isEmpty()}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${!boardList.hasPrevious} ? 'disabled'">
+                        <a class="page-link" id="page-back" href="javascript:void(0)"
+                            th:data-page="${boardList.number-1}">
+                            <span class="page-back">이전</span>
+                        </a>
+                    </li>
+                    <li th:each="page: ${#numbers.sequence(0, boardList.totalPages-1)}"
+                        th:if="${page >= boardList.number-5 and page <= boardList.number+5}"
+                        th:classappend="${page == boardList.number} ? 'active'">
+                        <a th:text="${page}" class="page-link" href="javascript:void(0)" th:data-page="${page}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${!boardList.hasNext} ? 'disabled'">
+                        <a class="page-link" id="page-next" href="javascript:void(0)"
+                            th:data-page="${boardList.number+1}">
+                            <span class="page-next">다음</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- 페이징 끝 -->
+            <!-- 게시글 끝 -->
+        </div>
+    </div>
+
+
+
+    <div class="col-md-6" style="width: 100%;">
+        <div class="plan" name="PlanList" style=" display: none; margin: auto; width: 80%;">
+            <!-- 플랜 -->
+            <div class="card" th:each="article:${userPlan}">
+
+                <h5 style="display: inline-block;" class="card-title">[[${article.planName}]]</h5>
+
+                <div class="card-containers" style="height: 15rem;" data-bs-toggle="modal"
+                    th:attr="data-bs-target=${'#target'+ article._id}">
+                    <img class="card-img-top" th:src="${article.img}" alt="" style="width: 100%; height: 100%;">
+
+
+                    <span class="stext" style="font-weight: bolder;">[[${article.startDay}]] <br>to
+                        <br>[[${article.endDay}]]</span>
+
+                </div>
+
+
+                <div class="modal fade" th:attr="id='target'+${article._id}" tabindex="-1"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content">
+
+
+                            <div class="modalList" th:each="single:${datePlan}" th:if="${single.key} == ${article._id}">
+                                <div class="card" th:each="day:${single.value}" style="display: inline-block;">
+                                    <span class="spans weather" name="1">[[${day.key}]]</span>
+
+                                    <div class="containers" style="overflow:auto; height: 20rem;">
+
+                                        <div class="divsa draggable" id="Wafter" style="display: flex;"
+                                            th:each="spot:${day.value}">
+
+                                            <div class="boxs" style="background: #BDBDBD;">
+                                                <img class="profiles" th:src="${spot.img}">
+                                                <!-- 관광지 사진 -->
+                                            </div>
+                                            <h5 class="card-weather"
+                                                style="top: 50%; width: 194px; text-align: center;">
+                                                [[${spot.name}]]
+                                                <!-- 관광지 이름 -->
+                                            </h5>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- 날짜 아이콘 -->
+                                    <div th:each="weather:${weatherList}" th:if="${weather.key} == ${day.key}">
+                                        <div th:each="arr, index:${weather.value}">
+                                            <div th:if="${index.index} == 0">
+                                                <input type="hidden" th:value="${arr}">
+                                            </div>
+                                            <div class="box" style="background: #BDBDBD;" th:if="${index.index} == 1">
+                                                <img class="profile" th:src="${arr}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <form action="" method="post" th:if="${authority}">
+                                        <input type="hidden" name="_id" id="_id" th:value="${article._id}">
+                                        <button class="btn btn-primary planBtn" onclick="planAdit(this)"
+                                            style="left: 40%;"> 플랜 수정 </button>
+                                        <button class="btn btn-primary planBtn" onclick="planRemove(this)"
+                                            style="right: 40%;"> 플랜 삭제 </button>
+                                    </form>
+                                </div>
+
+                                <div>
+                                    <form action="" method="post" th:if="!${authority}">
+                                        <input type="hidden" name="_id" id="_id" th:value="${article._id}">
+                                        <button class="btn btn-primary" onclick="planAdit(this)"
+                                            style=" display: block; position: fixed; right: 49%; margin-top: 80px;"> 플랜
+                                            복사 </button>
+                                </div>
+
+                                </form>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <br>
+    <br>
+    <br>
+
+
+
+    <div>
+        <!-- 추천 유저 -->
+        <div class="modal" id="featuredUser">
+            <div class="modal-dialog modal-dialog-centered modal-xl" th:if="${aiCode}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel" style="text-align: center;">[[${userOne.name}]]
+                            님과 비슷한 유저</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style=" position:relative;">
+                        <div class="divsa draggable" id="Wafter" style="display: flex;" th:each="featured:${userList}"
+                            onclick="goYouPage(this)">
+                            <input type="hidden" th:value="${featured.email}" name="youEmail">
+                            <div class="boxs" style="background: #BDBDBD;">
+                                <img class="profiles userPicture" th:src="${featured.picture}">
+                                <!-- 유저 사진 -->
+                            </div>
+                            <h5 class="card-weather userName" style="top: 50%; width: 194px; text-align: center;"
+                                th:name="${featured.email}">
+                                <!-- 유저 이름 -->
+                                [[${featured.name}]]
+                            </h5>
+                            <h5 class="card-weather userEmail" style="top: 50%; width: 194px; text-align: center;">
+                                <!-- 유저 이메일 -->
+                                [[${featured.email}]]
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" id="canvas">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content" style="height: 100%; width: 100%;">
+                <div class="modal-header" style="height: 100%; width: 100%;">
+                    <h5 class="modal-title" id="exampleModalLabel" style="text-align: center;">[[${userOne.name}]]님의 관광지
+                        선호도</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <br>
+                <div class="modal-body" style=" position:relative;">
+                    <canvas id="toggle-chart" width="500px" height="500px" style="margin: auto;">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="ModalView" role="button" style="display: none;" data-bs-toggle="modal" href="#featuredUser"></div>
+
+    <div id="loading" style="display: none; ">
+        <div id="loading_bar">
+            <!-- 로딩바의 경로를 img 태그안에 지정해준다. -->
+            <img src="/img/Spin-loading.gif">
+            <p style="font-size: x-large; font-weight: bold;">로딩 중 입니다 ...</p>
+        </div>
+    </div>
+
+
+    <!-- 그래프 용 자바 스크립트 -->
+    <script>
+        var size = document.getElementById("userInterest").value;
+        console.log(typeof size)
+        var preeSet = size.split(",");
+        console.log(preeSet);
+
+
+
+        let datas = {
+            labels: ["역사", "명소", "문화", "음식", "자연", "종교"],
+            datasets: [
+                {
+                    label: "나의 선호도",
+                    fill: true,
+                    backgroundColor: "rgba(54,162,235,0.2)",
+                    borderColor: "rgb(54,162,235)",
+                    pointBorderColor: "#fff",
+                    pointBackgroundColor: 'rgb(255, 99, 132)',
+                    pointHoverBorderColor: 'rgb(255, 99, 132)',
+                    data: preeSet,
+                }
+            ]
+        }
+
+
+        function setOption(i) {
+
+            option = {
+                responsive: false,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                        labels: {
+                            // This more specific font property overrides the global property
+                            labels: {
+                                // 이 더 특정한 폰트 속성은 전역 속성을 덮어씁니다
+                                defaultFontSize: 20
+                            }
+                        }
+                    },
+                },
+                scale: {
+                    ticks: {
+                        stepSize: 2,
+                    },
+                    title: {
+                        // display: true,
+                    }
+                },
+
+                scales: {
+                    r: {
+                        min: 0,
+                        max: 10,
+                        showLabelBackdrop: false,
+                        beginAtZero: true,
+                        pointLabels: {
+                            font: {
+                                size: i
+                            }
+                        }
+                    }
+                }
+            };
+
+            return option
+        }
+
+
+
+
+        let chart = new Chart(document.getElementById("radar-chart"), {
+            type: 'radar',
+            data: datas,
+            options: setOption(15),
+        });
+
+        $("#btnDiv").on("click", function (e) {
+
+            let chart = new Chart(document.getElementById("toggle-chart"), {
+                type: 'radar',
+                data: datas,
+                options: setOption(30),
+            });
+
+
+        });
+
+    </script>
+
+
+    <!-- 탭 메뉴용 자바 스크립트 -->
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $(".clickboard").click(function () {
+                $('.board').show();
+                $('.plan').hide();
+            })
+        });
+
+        $(document).ready(function () {
+            $(".clickplan").click(function () {
+                $('.plan').show();
+                $('.board').hide();
+            })
+        });
+
+        $(document).ready(function () {
+            $(document).ajaxStart(function () {
+                $('#loading').show(); // ajax 시작 -> 로딩바 표출
+            });
+
+            $(document).ajaxStop(function () {
+                $('#loading').hide(); // ajax 끝 -> 로딩바 히든
+            });
+        });
+
+
+        function goYouPage(t) {
+            let frm = document.createElement("form")
+            frm.setAttribute("method", "post");
+            let input = t.firstElementChild;
+
+            frm.appendChild(input);
+            frm.action =/*[[@{/project/youpage}]]*/
+                document.body.appendChild(frm);
+            console.log(t)
+            console.log(input)
+            frm.submit();
+
+        }
+
+        function view(t) { // 게시판 가기
+            console.log("asdasdfgasdas")
+            t.parentElement.submit(t);
+        }
+
+        $('.getUsers').click(function (e) {
+            let formData = new FormData();
+            formData.append("userId", document.getElementById("userId").value);
+
+            $.ajax({
+                url: "/project/model",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    console.log(data);
+                    $('#featuredUser').replaceWith(data);
+
+                },
+                complete: function (xhr, status) {
+                    document.getElementById('ModalView').click();
+                }
+
+
+            });
+
+
+        });
+
+
+
+        function planAdit(t) {
+            frm = t.parentElement;
+            frm.action = /*[[@{/project/planEdit}]]*/
+                frm.submit();
+        }
+
+        function planRemove(t) {
+            frm = t.parentElement;
+            frm.action = /*[[@{/project/planRemove}]]*/
+                frm.submit();
+        }
+
+        const page_elements = document.getElementsByClassName("page-link");
+        Array.from(page_elements).forEach(function (element) {
+            element.addEventListener('click', function () {
+                document.getElementById('page2').value = this.dataset.page;
+                document.getElementById('searchForm').submit();
+            });
+        });
+    </script>
+
+    <input type="hidden" id="loginUserId" th:value="${loginUser}">
+    <script src="/js/pushAlarm.js"></script>
+
+</body>
+
+</html>

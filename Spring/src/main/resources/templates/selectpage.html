@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관광지 선택페이지</title>
+
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+
+    <!-- 부트스트랩 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+
+    <script th:inline="javascript">
+
+        function cityfromcountry() {
+
+            let citysNames = document.getElementsByName('selectedCountry');
+            let citysNamesLength = citysNames.length;
+            for (var i = 0; i < citysNamesLength; i++) {
+                citysNames[0].remove()
+            }
+
+            let cityArray = new Array();
+            let cityInfos = new Object();
+            /*[# th:each="city : ${cityList}"]*/
+            cityInfos = new Object();
+            cityInfos.id =  /*[[${city.getEntityCountryDto().getCountryId()}]]*/
+                cityInfos.Cid =  /*[[${city.cityId}]]*/
+                cityInfos.name =  /*[[${city.cityName}]]*/
+                cityArray.push(cityInfos);
+            /*[/]*/
+
+            let city = document.getElementById('selectCountry');
+
+            city = city.options[city.selectedIndex].value;
+
+            for (var i = 0; i < cityArray.length; i++) {
+                if (city == cityArray[i].id) {
+                    let options = document.createElement('option');
+                    options.setAttribute('value', cityArray[i].id);
+                    options.innerHTML = cityArray[i].name;
+                    options.setAttribute('name', "selectedCountry");
+                    options.setAttribute('class', cityArray[i].Cid);
+                    document.getElementById("CityOfCountry").appendChild(options);
+                }
+            }
+        }
+
+
+
+
+    </script>
+    <script th:inline="javascript">
+        function test(t) {
+            $("#totalPlace .card-title").parent().hide();
+
+            t = t.value.replace(/ /g, '').replace(/\n/g, "");
+            let li = $(".card-title").get();
+            var j = "";
+
+            for (var i = 0; i < li.length; i++) {
+                j = li[i].innerHTML.replace(/ /g, '').replace(/\n/g, "");
+                if (j === t) {
+                    li[i].parentElement.style.display = 'inline-block';
+                }
+            }
+
+
+        }
+    </script>
+
+    <style>
+        .container-fluid {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        #navbarNav {
+            display: flex;
+            justify-content: center;
+        }
+
+        .section0 {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .section1 {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .section2 {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .section3 {
+            float: right;
+        }
+
+        .card {
+            margin: 5px;
+            border: none;
+
+
+        }
+
+
+        /* .center {
+            width: 300px;
+            margin: auto;
+        } */
+
+        .card-img-top {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 5px 7px 1px rgba(0, 0, 0, 0.2);
+        }
+
+
+
+
+        .search {
+            border: 1px solid transparent;
+            /* 테두리를 투명하게 만듭니다. */
+            width: 500px;
+            box-shadow: 0 5px 7px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .search::placeholder {
+            opacity: 0.3;
+            /* 글씨를 흐리게 보이도록 설정합니다. */
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+
+
+
+        .card-img-top:hover {
+            transform: scale(1.1);
+            transition: transform 0.5s;
+            filter: brightness(70%);
+        }
+
+        .stext {
+            position: absolute;
+            top: 50%;
+            /* 이미지 중앙에 텍스트 정렬 */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* 텍스트 중앙 정렬을 위한 이동 */
+            color: white;
+            /* 텍스트 색상 설정 */
+            padding: 10px;
+            /* 텍스트 주변 여백 설정 */
+            text-align: center;
+            opacity: 0;
+            /* 초기에는 숨김 */
+            transition: opacity 0.5s;
+            font-size: 150%;
+        }
+
+        .card:hover .stext {
+            opacity: 1;
+            /* 호버 시 텍스트 나타남 */
+        }
+        h1 {
+            margin: auto auto auto 35%;
+            font-size: 5em;
+            font-family: "Lobster", cursive;
+            color: rgb(67, 145, 187);
+            text-shadow: -2px -2px 0 rgb(0, 68, 255);
+        }
+    </style>
+
+
+        <script>
+            function beforeCheck(){
+                // alert($('#getChild').children().length==0);
+                if($('#getChild').children().length==0){
+                    Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "관광지를 한개 이상 선택해주세요",
+
+                });
+                    return false;
+                }
+            }
+        </script>
+
+
+</head>
+
+<body>
+    <nav th:replace="~{nav :: navbarFragment}"></nav>
+    <h1>T A L A R I A</h1>
+
+    <!-- 나라,도시,관심사 선택 -->
+    <div class="section0">
+
+        <select class="form-select" id="selectCountry"
+            style="width:300px;height:50px; display: inline-block;border: none;box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);margin: 10px"
+            aria-label="Default select example" onchange="cityfromcountry()">
+            <option selected name="selectName">Select country</option>
+            <!-- 전체 국가 리스트 표시 -->
+            <option th:each="country:${totalCountry}" th:value="${country.countryId}">[[${country.countryName}]]
+            </option>
+        </select>
+
+        <select class="form-select"
+            style="width:300px;height:50px; display: inline-block;border: none;box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);margin: 10px"
+            aria-label="Default select example" id="CityOfCountry">
+            <option selected>Select city</option>
+        </select>
+
+        <input type="hidden" id="selectedcity" name="cityForplace">
+
+        <script type="text/javascript">
+            $('#CityOfCountry').on('change', function () {
+                $('#selectedcity').val($('#CityOfCountry option:selected').attr('class'));
+                $('#suImage').hide();
+                $('#seImage').hide();
+            });
+        </script>
+
+        <script th:inline="javascript">
+            document.getElementById("selectCountry").value =/*[[${checkCountry.countryId}]]*/
+                cityfromcountry();
+        </script>
+
+        <select class="form-select"
+            style="width:300px;height:50px; display: inline-block;border: none;box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5); margin: 10px;"
+            aria-label="Default select example" id="interestId">
+            <option selected>Select interest</option>
+            <option th:each="like:${interestList}" th:value="${like.InterestId}">[[${like.InterestType}]]</option>
+        </select>
+        <input type="hidden" id="selectedinterest">
+
+        <script type="text/javascript">
+            $('#interestId').on('change', function () {
+                $('#selectedinterest').val($('#interestId option:selected').attr('value'));
+            });
+        </script>
+
+
+    </div>
+
+    <div class="section2">
+
+        <input class="form-control me-2 search" type="search" placeholder="찾고싶은 관광지를 검색하세요" aria-label="Search"
+            onchange="test(this)" style="width: 500px;">
+
+
+
+        <button class="btn btn-outline-primary" type="button"
+            style="width: 200px; border: none;box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);" id="popup">popup</button>
+        <textarea style="display: none;">[[${date}]]</textarea>
+
+    </div>
+
+
+    <br>
+    <br>
+    <div class="row">
+
+        <div class="col-md-6">
+            <h3 class="section0">추천 관광지</h3>
+            <script>
+                $(function () {
+
+                    $('#CityOfCountry').on('change', function () {
+                        var city = $('#selectedcity').val(); // 도시에 맞는 id 값
+                        var place = $('.cityId').eq(0).text(); //1 런던
+                        var place1 = $('.cityId').text(); //2 맨체스터 
+
+                        $('#totalPlace').show();
+                        $('#totalPlace div[name!=' + city + ']').hide();
+
+                        console.log("city: " + city);
+                        console.log("place: " + place);
+                        $('#totalPlace div[name=' + city + ']').show().css("display", "inline-block");
+                        $('.card-body').show();
+
+
+                    });
+                    $('#interestId').on('change', function () {
+
+                        var interest = $('#selectedinterest').val();
+                        var city = $('#selectedcity').val(); // 도시에 맞는 id 값
+
+
+
+                        $('#totalPlace div[name=' + city + ']').hide();
+                        $('#totalPlace div[name2!=' + interest + ']').hide();
+                        $('#totalPlace div[name=' + city + '][name2=' + interest + ']').show().css("display", "inline-block");
+                        $('.card-body').show();
+                        console.log('city: ' + city);
+                        console.log('interest: ' + interest);
+
+                    });
+
+
+
+                });
+
+
+            </script>
+
+            <div class="place suggestion_list" id="totalPlace">
+                <br>
+                <img id="suImage" src="https://i.pinimg.com/564x/dd/a0/2c/dda02cc3d86d78cea7ce080e8437ef5d.jpg" alt="" style="width: 50%; margin-left: 200px; border: 10px;">
+                <div class="card" style="width: 18rem; display: none; " th:each="place:${placeList}"
+                    th:name="${place.getEntityCityDto().getCityId()}"
+                    th:name2="${place.getEntityInterestDto().getInterestId()}">
+                    <h5 class="card-title" th:name="${place.placeId}">
+                        [[${place.placeName}]]</h5>
+                    <img th:src="${place.imageP}" style="width:283px; height:200px;  margin:2px;" class="card-img-top"
+                        alt="사진없음">
+                    <span class="stext" style="font-weight: bolder;">담기/삭제</span>
+                    <div class="card-body" style="display: none;">
+                        <p class="card-text" style="display: none;">[[${place.placeType}]]</p>
+                        <p class="cityAddress" style="display: none;">[[${place.placeAddress}]]</p>
+                        <p class="cityId" name="cityId" style="display: none;">
+                            [[${place.getEntityCityDto().getCityId()}]]</p>
+                        <p class="lat" style="display: none;">[[${place.lat}]]</p>
+                        <p class="lan" style="display: none;">[[${place.lan}]]</p>
+                        <input class="btn btn-primary" type="hidden" name="placeId" th:value="${place.placeId}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <form th:action="@{/project/basket}" method="post" onsubmit="return beforeCheck()">
+                <input type="hidden" name="date" th:value="${date}" style="display: none;">
+
+                <h3 class="section0" onclick="saveSelectedPlaces()">선택된 관광지</h3>
+                <br>
+                <br>
+                <img id="seImage" src="https://dspncdn.com/a1/media/692x/7a/63/e2/7a63e226487f1543330a8eb5e7edb98a.jpg" alt="" style="width: 50%; margin-left: 200px;">
+                <div class="section1" style="display: inline-block;">
+                    <div class="section1 shopping_basket" id="getChild" style="display: inline-block;">
+                    </div>
+                </div>
+
+
+        </div>
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-outline-primary"
+            style="width: 200px; margin: auto; display: block; border: none;box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);">next</a>
+    </div>
+    </form>
+
+
+    <input type="hidden" id="loginUserId" th:value="${loginUser}">
+    <script src="/js/pushAlarm.js"></script>
+
+</body>
+
+<script>
+
+
+const clickHandler = function() {  
+                console.log(this.parentElement.parentElement)
+                if (this.parentElement.parentElement.className == 'place suggestion_list') {
+                    buttons = this.parentElement;
+                    this.value = 'delate'
+                    document.querySelector('.shopping_basket').append(buttons)
+                }
+
+                else if (this.parentElement.parentElement.className == 'section1 shopping_basket') {
+                    buttons = this.parentElement;
+                    this.value = 'Plus'
+                    document.querySelector('.suggestion_list').append(buttons)
+                }
+
+            }
+
+
+
+    function reMoveistener() {
+        imgs = document.querySelectorAll("img");
+        imgs.forEach(img => {
+            img.removeEventListener("click", clickHandler);
+        });
+    }
+
+
+    function addistener() {
+        imgs = document.querySelectorAll("img");
+        console.log("ccccc" + imgs.length)
+        imgs.forEach(img => {
+            console.log("000")
+            img.addEventListener("click", clickHandler);
+        });
+    }
+
+    function EventListener(){
+        reMoveistener();
+        addistener();
+    }
+
+    EventListener();
+
+    $('#popup').on('click', function () {
+        var url = "popup";
+        var name = "test"
+        var option = "width = 800, height = 800, top = 100, left = 200, location = no";
+        popWin = window.open(url, name, option);
+        popWin.opener = self;
+        popWin.addEventListener('beforeunload', function (event) {
+            console.log("팝업창 닫힘")
+            EventListener();
+        });
+    });
+
+</script>
+
+</html>

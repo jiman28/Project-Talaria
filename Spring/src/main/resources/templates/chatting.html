@@ -1,0 +1,147 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+
+    <style>
+        @charset "UTF-8";
+
+        * {
+            box-sizing: border-box;
+        }
+
+        #chatt {
+            width: 800px;
+            margin: 20px auto;
+        }
+
+        #chatt #talk {
+            width: 800px;
+            height: 400px;
+            overflow: scroll;
+            border: 1px solid #aaa;
+        }
+
+        #chatt #messa {
+            width: 740px;
+            height: 100px;
+            display: inline-block;
+        }
+
+        #chatt #sendZone>* {
+            vertical-align: top;
+
+        }
+
+        #chatt #btnSend {
+            width: 54px;
+            height: 100px;
+        }
+
+        #chatt #talk div {
+            width: 70%;
+            display: inline-block;
+            padding: 6px;
+            border-radius: 10px;
+
+        }
+
+        #chatt .me {
+            background-color: #ffc;
+            margin: 1px 0px 2px 30%;
+        }
+
+        #chatt .other {
+            background-color: #eee;
+            margin: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='chatt'>
+        <h1>WebSocket Chatting</h1>
+        <input type='hidden' id='userName' th:value='${userName}'>
+        <input type='text' id='userId' value='1'>
+        <input type='button' value='로그인' id='btnLogin'>
+        <br />
+        <div id='talk'></div>
+        <div id='sendZone'>
+            <textarea id='messa' value='hi...'></textarea>
+            <input type='button' value='전송' id='btnSend'>
+        </div>
+    </div>
+    <script type='text/javascript'>
+
+        function getId(id) {
+            return document.getElementById(id);
+        }
+
+        var data = {};//전송 데이터(JSON)
+
+        var ws;
+        var userId = getId('userId'); 
+        var btnLogin = getId('btnLogin');
+        var btnSend = getId('btnSend');
+        var talk = getId('talk');
+        var messa = getId('messa');
+
+        btnLogin.onclick = function () { //웹소켓 연결
+            var names = document.getElementById("userName").value;
+            var strs=  "ws://localhost:8080/chat/"+ names
+            ws = new WebSocket(strs); //웹소켓 연결 링크
+            console.log(strs);
+
+            ws.onmessage = function (messa) {
+                console.log("ws.onmessage 실행");
+                var data = JSON.parse(messa.data);
+                var css;
+                console.log(messa);
+                console.log(messa.data);
+
+                console.log("userId.value==>"+userId.value);
+                if (data.userId == userId.value) {
+                    css = 'class=me';
+                } else {
+                    css = 'class=other';
+                }
+
+                var item = `<div ${css} >
+		                <span><b>${data.userId}</b><br/>
+                      <span>${data.messa}</span>
+						</div>`;
+
+                talk.innerHTML += item;
+                talk.scrollTop = talk.scrollHeight;//스크롤바 하단으로 이동
+            }
+        }
+
+        messa.onkeyup = function (ev) {
+            if (ev.keyCode == 13) {
+                send();
+            }
+        }
+
+        btnSend.onclick = function () {
+            send();
+        }
+
+        function send() {
+            if (messa.value.trim() != '') {
+                data.userId = getId('userId').value;
+                data.messa = messa.value;
+                data.roomId = 85;
+                data.messageType = "TAKE"
+                // data.date = new Date().toLocaleString();
+                var temp = JSON.stringify(data);
+                ws.send(temp);
+            }
+            messa.value = '';
+        }
+
+
+    </script>
+</body>
+
+</html>

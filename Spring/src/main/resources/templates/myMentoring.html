@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    <style>
+        .wrap {
+            /* 뒷배경 색 */
+            padding: 40px 0;
+            background-color: #A8C0D6;
+        }
+
+        .wrap .chat {
+            /* 채팅 순서, 스타일 */
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .wrap .chat .icon {
+            /* 프로필 사진 */
+            position: relative;
+            overflow: hidden;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #eee;
+        }
+
+        .wrap .chat .icon i {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            font-size: 2.5rem;
+            color: #aaa;
+            transform: translateX(-50%);
+        }
+
+        .wrap .chat .textbox {
+            /* 말풍선 스타일 */
+            position: relative;
+            display: flex;
+            align-items: center;
+            /* max-width: calc(100% - 70px); */
+            min-width: 50px;
+            flex: 1;
+            /* 화면 가로 공간을 적절하게 공유 */
+            padding: 10px;
+            margin-top: 7px;
+            /* font-size: 13px; */
+            border-radius: 10px;
+        }
+
+        .wrap .chat .textbox::before {
+            /* 말풍선 꼬리 */
+            position: absolute;
+            display: block;
+            top: 0;
+            font-size: 1.5rem;
+        }
+
+        .wrap .ch1 .textbox {
+            margin-left: 20px;
+            background-color: #ddd;
+        }
+
+        .wrap .ch1 .textbox::before {
+            left: -15px;
+            content: "◀";
+            color: #ddd;
+        }
+
+        .wrap .ch2 {
+            /* 말풍선 정렬 */
+            flex-direction: row-reverse;
+        }
+
+        .wrap .ch2 .textbox {
+            /* 내가 쓴 채팅 노란색 */
+            margin-right: 20px;
+            background-color: #F9EB54;
+        }
+
+        .wrap .ch2 .textbox::before {
+            /* 챗 2 꼬리 */
+            right: -15px;
+            content: "▶";
+            color: #F9EB54;
+        }
+
+        .js {
+            display: block;
+
+        }
+
+        .sendmsg .textarea {
+            float: left;
+            width: 85%;
+            height: 64px;
+            border-radius: 8px 0px 0px 8px;
+            margin: 0px 0px 0px 0px;
+            padding: 2px 2px 2px 2px;
+            resize: none;
+        }
+
+        .sendmsg .button {
+            float: right;
+            width: 62px;
+            height: 68px;
+            background-color: #ffec42;
+            border-radius: 0px 8px 8px 0px;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+            text-align: center;
+            display: table;
+            cursor: pointer;
+        }
+
+        .sendmsg .button p {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .roomRe {
+            display: none;
+        }
+
+        .roomIn:hover {
+            .roomRe {
+                display: table-row;
+                font-weight: bold;
+                float: right;
+            }
+        }
+
+        .userAddE {
+            display: none;
+        }
+    </style>
+</head>
+
+<body id="newMsg">
+    <nav th:replace="~{nav :: navbarFragment}"></nav>
+    <br>
+    <br>
+    <br>
+    <br>
+    
+    <input type="hidden" id="loginUserId" th:value="${loginUser.id}">
+    <input type="hidden" id="loginUserName" th:value="${loginUser.name}">
+    <input type="hidden" id="picture" th:value="${loginUser.picture}">
+    <div style="width: 80%;  margin: auto;">
+        <div class="card card-body blur shadow-blur mx-1 mx-md-1 mt-n3">
+            <form th:action="@{/room}" method="post" name="chatRoomSave">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group input-group-outline">
+                            <input type="text" class="form-control" id="roomName" name="roomName" placeholder="방 제목">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group input-group-outline">
+                            <input type="text" class="form-control" id="userA" name="userA" placeholder="user-Email">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <button id="btn-create" class="btn btn-warning">1:1 채팅방 개설</button>
+                    </div>
+                </div>
+            </form>
+
+
+            <table class="table table-hover table-sm">
+                <thead>
+                    <th style="color:rgb(123, 128, 154)"><h2>채팅방 목록</h2></th>
+                </thead>
+                <tbody>
+                    <tr th:each="roomOne : ${rooms}">
+                        <td>
+                            <form th:action="@{/roomOne}" method="get" name="roomIn" class="roomIn">
+                                <input type="hidden" name="roomId" th:value="${roomOne._id}">
+                                <input type="button" style="text-decoration-line: none; color: rgb(233, 30, 99); font-weight: 900;" class="btn btn-link btn-lg" onclick="lookUp(this)"
+                                    th:value="${roomOne.roomName}">
+                                <div id="newMsgInt" th:name="${roomOne._id}" th:if="${roomOne.newMsg} != 0"
+                                    style="display: inline-flex; background-color: red; color: white; font-weight: bold; border-radius: 50%; height: 20px; width: 20px; text-align: center; justify-content: center;">
+                                    [[${roomOne.newMsg}]]</div>
+                                <button type="button" onclick="roomRemove(this)"
+                                    class="btn btn-outline-danger roomRe">채팅방
+                                    삭제</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="chatModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="staticBackdropLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div id="modalC" class="modal-content" th:if="${ffff}">
+
+                <div class="user-container modal-header">
+                    <label class="modal-title" id="staticBackdropLabel" for="nickname">[[${room.roomName}]]
+                        &nbsp;</label>
+                    <input type="hidden" id="nickname" th:value="${loginNick}">
+                    <button type="button" class="btn btn-primary userAddB" id="userAdd" onclick="userAddBtn()">대화 상대
+                        추가</button>
+                    <form th:action="@{/outChat}" method="post">
+                        <input type="hidden" name="userAddRoomId" th:value="${room._id}">
+                        <input type="hidden" name="userAddText" th:value="${user.email}">
+                        <button type="submit" class="btn btn-outline-danger outChat" style="margin-left: 20px;"
+                            id="outChat">채팅방 나가기</button>
+                    </form>
+                    <form th:action="@{/userAdd}" method="post">
+                        <input type="hidden" name="userAddRoomId" th:value="${room._id}">
+                        <input type="text" class="form-control userAddE" style="width: 200px; float: left;"
+                            id="userAddText" name="userAddText" placeholder="유저E-mail입력하세요">
+                        <button class="btn btn-primary userAddE">선택</button>
+                    </form>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="display-container modal-body wrap" style="height: 1000px">
+                    <div th:each="ChatLog:${ChatList}">
+                        <div class="chat ch2" th:if="${ChatLog.userName} == ${loginNick}">
+                            <div class="icon"><img th:src="${ChatLog.userImg}" style="width: 100%; height: 100%; object-fit: cover;" alt=""></div>
+                            <div class="chat-content">
+                                <div class="textbox">[[${ChatLog.msg}]]</div>
+                            </div>
+                        </div>
+
+                        <div class="chat ch1" th:if="${ChatLog.userName} != ${loginNick}">
+                            <div class="icon"><img th:src="${ChatLog.userImg}" style="width: 100%; height: 100%; object-fit: cover;" alt=""></div>
+                            <div class="chat-content">
+                                <span class="js">[[${ChatLog.userName}]]</span>
+                                <div class="textbox">[[${ChatLog.msg}]]</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-container modal-footer sendmsg">
+                    <textarea type="text" id="msg" class="chatting-input form-control textarea"
+                        aria-label="Recipient's username" aria-describedby="button-addon2"></textarea>
+                    <input type="hidden" id="myUserId" th:value="${user.id}">
+                    <button type="button" id="button-send" class="send-button button">전송</button>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="ModalView" role="button" style="display: none;" data-bs-toggle="modal" href="#chatModal"></div>
+
+</body>
+
+<script th:inline="javascript">
+
+    console.log("a")
+
+    function roomRemove(t) {
+        const frm = t.parentElement;
+        frm.action =/*[[@{/roomRemove}]]*/
+            frm.submit();
+    }
+
+    let modelSituation = false;
+    let roomName;
+    let roomId;
+    let username  = document.getElementById('loginUserName').value;
+    let userId  = document.getElementById('loginUserId').value;
+    let sockJs;
+    let stomp;
+    let picture = document.getElementById("picture").value
+
+    console.log("userId===>"+userId)
+
+    function lookUp(t) {
+        t.nextElementSibling.remove();
+        const frm = t.parentElement;
+        let formData = new FormData(frm);
+        roomId = formData.get("roomId")
+        var json = { roomId: formData.get("roomId") };
+
+
+        $.ajax({
+            url: "/roomOne",
+            type: "POST",
+            data: json,
+        })
+
+            .done(function (fragment) {
+                $('.modal').replaceWith(fragment);
+                console.log("a")
+            });
+
+
+        $.ajax({
+            url: "/room",
+            type: "GET",
+            data: json,
+
+        })
+            .done(function (fragment) {
+                roomName = fragment.room.roomName;
+                roomId = fragment.room._id;
+                username = fragment.user.name;
+                userId = fragment.user.id;
+            });
+
+
+        setTimeout(function () {
+
+            document.getElementById('ModalView').click();
+
+
+            sockJs = new SockJS("/stomp/chat");
+            //1. SockJS를 내부에 들고있는 stomp를 내어줌
+            stomp = Stomp.over(sockJs);
+            console.log(sockJs);
+            console.log(stomp);
+
+            //2. connection이 맺어지면 실행
+            stomp.connect({}, function () {
+                console.log("STOMP Connection")
+                //4. subscribe(path, callback)으로 메세지를 받을 수 있음
+                stomp.subscribe("/sub/chat/room/" + roomId, function (chat) {
+                    console.log("chat : " + chat);
+                    let content = JSON.parse(chat.body);
+                    console.log(content.picture);
+                    let sendPicture = content.picture;
+                    let message = content.messa;
+                    let writer = content.userName;
+
+                    //css 적용하여 반환
+                    const item = new LiModel(writer, message,sendPicture);
+                    item.makeLi();
+
+                    function LiModel(writer, message,sendPicture) {
+                        this.writer = writer;
+                        this.msg = message;
+                        this.sendPicture = sendPicture;
+                        var dom = "";
+                        // 복붙위치
+                        const chatList = document.querySelector(".wrap");
+                        this.makeLi = () => {
+
+                            const div = document.createElement("div");
+                            div.classList.add("chat");
+                            div.classList.add(username === this.writer ? "ch2" : "ch1")
+                            if (username === this.writer) {
+                                dom =
+                                    `<div class="icon"><img src="${this.sendPicture}" style="width: 100%; height: 100%; object-fit: cover;" alt=""></div>
+                                <div class="chat-content">
+                                    <div class="textbox">${this.msg}</div>
+                                </div>`;
+                            } else {
+                                dom =
+                                    `<div class="icon"><img src="${this.sendPicture}" style="width: 100%; height: 100%; object-fit: cover;" alt=""></div>
+                                <div class="chat-content">
+                                    <span class="js">${this.writer}</span>
+                                    <div class="textbox">${this.msg}</div>
+                                </div>`;
+                            }
+
+
+
+                            div.innerHTML = dom;
+                            chatList.appendChild(div)
+                            $('.display-container').scrollTop($('.display-container')[0].scrollHeight); // 채팅이 많아질시에 자동 스크롤
+                        }
+                    }
+
+                });
+
+                //3. send(path, header, message)로 메세지를 보낼 수 있음
+                stomp.send('/pub/chat/enter', {}, JSON.stringify({ roomId: roomId, userName: username, userId: userId }))
+            });
+
+            //엔터를 누르면 메시지 전송
+            $("#msg").on("keyup", function (event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    document.getElementById('button-send').click();
+                }
+            });
+
+            $("#button-send").on("click", function (e) {
+                let msg = document.getElementById("msg");
+                console.log({ roomId: roomId, messa: msg.value, userId: userId, userName: username, picture: picture })
+                stomp.send('/pub/chat/message', {}, JSON.stringify({ roomId: roomId, messa: msg.value, userId: userId, userName: username, picture: picture }));
+                msg.value = '';
+            });
+
+
+            $('#chatModal').on('hidden.bs.modal', function (e) {
+                modelSituation = false;
+                console.log("stomp.disconnect() 실행")
+                stomp.disconnect();
+                console.log("modelSituation"+modelSituation);
+                reloadDivArea()
+            });
+
+            $('#chatModal').on('shown.bs.modal', function (e) {
+            modelSituation = true;
+            console.log("modelSituation:   "+modelSituation);
+            $('.display-container').scrollTop($('.display-container')[0].scrollHeight);
+        });
+
+
+        }, 100);
+
+        
+
+    }
+
+    $("#btn-create").on("click", function (e) {
+        e.preventDefault();
+
+        let name = $("input[name='roomName']").val();
+        let password = $("#userA").val();
+        const chatRoomSave = document.forms["chatRoomSave"];
+
+        console.log(password);
+        //채팅방 이름 체크
+        if (name == "") {
+            alert("채팅방 이름을 적어주세요")
+        } else {
+            //비밀번호 입력 체크
+        
+                alert(name + "방이 개설되었습니다.");
+                chatRoomSave.submit();
+            
+        }
+    });
+
+
+    //채팅방 비밀번호 체크
+    function roomPwCheck(t) {
+        const roomIn = t.parentElement;
+        console.log(roomIn);
+        // const roomIn = document.forms["roomIn"];
+        roomIn.submit();
+
+    }
+
+
+
+
+
+    function reloadDivArea() {
+        if (modelSituation) {
+            console.log("modelSituation:  "+modelSituation);
+        } else {
+            console.log("modelSituation:   "+modelSituation);
+            $("#newMsg").load(location.href + "#newMsg");
+            console.log("부분 새로고침");
+        }
+
+    }
+    const id = document.getElementById('loginUserId').value;
+
+    const eventSource = new EventSource(`http://localhost:8080/subscribe/` + id);
+
+    eventSource.addEventListener("sse", function (event) {
+        console.log(event.data);
+        const data = JSON.parse(event.data);
+
+        console.log(data);
+
+        (async () => {
+            // 브라우저 알림
+            const showNotification = () => {
+
+                reloadDivArea()
+
+                const notification = new Notification(data.title, {
+                    body:  data.sentUserName+": "+data.msg
+                });
+
+                setTimeout(() => {
+                    notification.close();
+                }, 10 * 500);
+
+                notification.addEventListener('click', () => {
+                    window.open(data.url, '_self');
+                });
+            }
+
+            // 브라우저 알림 허용 권한
+            let granted = false;
+
+            if (Notification.permission === 'granted') {
+                granted = true;
+            } else if (Notification.permission !== 'denied') {
+                let permission = await Notification.requestPermission();
+                granted = permission === 'granted';
+            }
+
+            // 알림 보여주기
+            if (granted && data.newMsg) {
+                showNotification();
+            }
+        })();
+    })
+
+
+    function userAddBtn() {
+        $(".userAddB").css("display", "none");
+        $(".outChat").css("display", "none");
+        $(".userAddE").css("display", "table-row");
+    }
+</script>
+</body>
+
+</html>

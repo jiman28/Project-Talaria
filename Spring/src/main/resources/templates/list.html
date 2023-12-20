@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<!-- <link rel="stylesheet" href="/css/bootstrap.css"> -->
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+	<!-- 구글폰트 시작 -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Vina+Sans&display=swap" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+	<!-- 구글폰트 끝 -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>탭메뉴 테스트</title>
+	<!-- jquery 사용 -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<style>
+		.container {
+			width: 100%;
+			margin: 20px auto;
+			text-align: center;
+			font-family: 'Jua', sans-serif;
+			font-size: 20px;
+		}
+
+		.tab_title {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			text-align: center;
+			font-family: 'Jua', sans-serif;
+			/* 탭 메뉴 항목을 가운데 정렬합니다 */
+		}
+
+		.tab_title li {
+			list-style: none;
+			display: inline-block;
+			width: 100px;
+			margin: 0 5px;
+			padding: 10px 15px;
+			cursor: pointer;
+			text-align: center;
+			color: white;
+			border: 1px solid #a5a2a2;
+			font-size: 16px;
+			background-color: #c1ddf7;
+			font-family: 'Jua', sans-serif;
+		}
+
+		.tab_title li.on {
+			background-color: #0d6efd;
+			font-weight: bold;
+		}
+
+		.tab_cont {
+			clear: both;
+			border: 0px solid #dedede;
+			height: 130px;
+			margin: 0;
+			text-align: center;
+			font-family: 'Jua', sans-serif;
+		}
+
+
+		.tab_cont div {
+			display: none;
+		}
+
+
+		.tab_cont div.on {
+			display: block;
+		}
+
+
+		#KIN {
+			display: block;
+		}
+
+		.cls1 {
+			text-decoration: none;
+			position: relative;
+			right: 0px;
+			bottom: 0px;
+		}
+
+		.cls2 {
+			text-align: center;
+			font-size: 16px;
+			display: inline-block;
+			font-style: inherit;
+			line-height: 39px;
+			background-color: #f19a09;
+			color: #fff;
+			padding: 14px;
+		}
+
+
+		.cls3 {
+			word-break: break-all;
+			padding: 0;
+			font-family: 'Jua', sans-serif;
+			border: 0;
+			cursor: pointer;
+			position: relative;
+			outline: 0;
+			-webkit-tap-highlight-color: #0d6efd;
+			background-color: #0d6efd !important;
+			transition: background-color 0.3s, transform 0.3s;
+			display: block;
+			width: 30%;
+			height: 60px;
+			margin: 15px 35% 5px;
+			font-size: 20px;
+			font-weight: 500;
+			color: #fff;
+			line-height: 60px;
+			text-align: center;
+			text-indent: -12px;
+		}
+
+		.cls3:hover {
+			background-color: #0056b3 !important;
+			transform: scale(1.1);
+		}
+
+		.cls3:before {
+			display: inline-block;
+			width: 30px;
+			height: 28px;
+			background-image: url(https://dszw1qtcnsa5e.cloudfront.net/bin/live/console-community-view/assets/web/pc/icon-write.png);
+			background-size: cover;
+			content: "";
+			vertical-align: text-top;
+		}
+
+		.cls4 {
+			text-decoration: none;
+			position: relative;
+			right: 420px;
+			top: -810px;
+
+
+		}
+
+		#slider {
+			overflow: hidden;
+			position: relative;
+			border: 1px solid red;
+			right: 0px;
+			left: -405px;
+			bottom: -900px;
+			width: 1900px;
+			height: 200px;
+		}
+
+		.image-box {
+			width: 5400px;
+			height: 100%;
+			display: flex;
+			flex-wrap: nowrap;
+			animation: bannermove 100s linear infinite;
+		}
+
+		.tbl_board {
+			width: 85%;
+			border-collapse: collapse;
+			
+			text-align: center;
+			color: #222;
+		}
+
+		table {
+			margin-bottom: 20px;
+
+			display: table;
+			border-collapse: separate;
+			box-sizing: border-box;
+			text-indent: initial;
+			border-spacing: 2px;
+			border-color: gray;
+		}
+
+
+		.btn-outline {
+			width: 10%;
+		}
+
+		#search_kw {
+			width: 10%;
+			/* 원하는 너비로 조정 */
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			font-size: 16px;
+		}
+
+		.search-type {
+			width: 150px;
+			/* 원하는 너비로 조정 */
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			font-size: 16px;
+		}
+
+		#btn_search {
+			background-color: #007BFF;
+			/* 버튼 배경색 */
+			color: #fff;
+			/* 버튼 글자색 */
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+			margin-right: 100rem;
+		}
+
+		#btn_search:hover {
+			background-color: #0056b3;
+			/* 호버 시 배경색 변경 */
+		}
+
+
+		.pagination li a.page-link {
+			font-family: Noto Sans KR, Helvetica, sans-serif;
+			color: #6d6969;
+			-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+		}
+
+		.KIN {
+			word-break: break-all;
+			margin: 0;
+			font-family: Noto Sans KR, Helvetica, sans-serif;
+			border: 0;
+			cursor: pointer;
+			position: relative;
+			background-color: transparent;
+			outline: 0;
+			-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+			padding: 0 15px;
+			font-size: 14px;
+			color: #d5d5d5;
+		}
+
+		/* 업스크롤디자인 */
+
+		#movetopbtn {
+			position: fixed;
+			bottom: 20px;
+			right: 20px;
+			width: 50px;
+			height: 50px;
+			background-color: #007BFF;
+			color: #fff;
+			border: none;
+			border-radius: 50%;
+			cursor: pointer;
+			transition: background-color 0.3s, transform 0.3s;
+		}
+
+		#movetopbtn img {
+			width: 24px;
+			height: 24px;
+			margin: 13px;
+		}
+
+		/* 스크롤 버튼 호버 효과 */
+		#movetopbtn:hover {
+			background-color: #0056b3;
+			transform: scale(1.1);
+		}
+
+		/* 페이지 최상단으로 가기 아이콘 */
+		#movetopbtn img {
+			width: 24px;
+			height: 24px;
+			margin: 13px;
+		}
+
+		.search-button {
+			background-color: #0d6efd !important;
+			color: #fff;
+			border: none;
+			border-radius: 0;
+			cursor: pointer;
+			transition: background-color 0.3s, transform 0.3s;
+			padding: 0;
+			width: 4%;
+			height: 10%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.search-button:hover {
+			background-color: #0056b3 !important;
+			transform: scale(1.1);
+		}
+
+		/* 검색 창 스타일 */
+		.search-container {
+			display: flex;
+		}
+
+		.form-control {
+			width: 100%;
+		}
+
+		.search-form-local {
+			text-align: center;
+			/* 요소 내부의 텍스트 가운데 정렬 */
+			margin: 0 auto;
+			/* 좌우 여백을 자동으로 설정하여 수평 가운데 정렬 */
+			display: block;
+			/* 가운데 정렬을 적용하기 위해 블록 레벨 요소로 설정 */
+		}
+
+		.pagetitle {
+			background-image: url(https://img.freepik.com/free-photo/small-traveller-figure-for-world-tourism-day_1150-17453.jpg?size=626&ext=jpg&ga=GA1.1.375984479.1698716936&semt=sph);
+			background-size: auto;
+			background-position-x: 100%;
+			background-position-y: 20%;
+		}
+
+		.screen_out {
+			/* font-family: Noto Sans KR, Helvetica, sans-serif; */
+			font-family: 'Vina Sans', sans-serif;
+			font-size: 100px;
+		}
+		#tagtbl{
+			height: 50px;
+			color: antiquewhite;
+			font-size: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<nav th:replace="~{nav :: navbarFragment}"></nav>
+	<br>
+	<br>
+	<br>
+	<br>
+	<h2 id="kakaoBody" class="screen_out" style="text-align: center;">T a L a R i a</h2>
+	<div class="pagetitle" style="text-align: center;">
+		<img id="imgmain"
+			src="https://cdn.dribbble.com/users/1044993/screenshots/4202451/media/299af37a0ff09f7ccc7de5e200af8634.png"
+			alt="커뮤니티 게시판" style="border-radius: 56%; width: 200px; height: 180px;">
+		<!--style="margin-top: 20px; width: 15;" -->
+		<h3 class="tit_atc ff_ns" id="kakaoBodys" style="margin-top: 200px; color: #dedede00;">리뷰</h3>
+	</div>
+	<br>
+	<div class="inner_atc atc_free">
+		<button id="movetopbtn" th:onclick="|movetopbtn()|" style=" position: fixed;
+              bottom: 1rem;
+              right: 1rem;
+              width: 4rem;
+              height: 4rem;
+              background: #0062ff;
+              color: #faf7f7;">
+			<img src="https://cdn.dribbble.com/users/1044993/screenshots/4202451/media/299af37a0ff09f7ccc7de5e200af8634.png"
+				alt=""
+				style="position: fixed; width: 4rem; height: 4rem; bottom: 1rem; right: 1rem; border-radius: 50%;" />
+		</button>
+		<script th:inline="javascript" layout:fragment="script" type='text/javascript'>
+			function movetopbtn() {
+				window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
+			}
+		</script>
+		<div class="container">
+			<ul class="tab_title">
+				<li class="on" name="tabtitle">리뷰모음</li>
+				<li name="tabtitle">동행자구인</li>
+				<li name="tabtitle">거래시스템</li>
+			</ul>
+			<div class="search-form-local">
+				<form name="search-form" method="get" autocomplete="off" th:action="@{/board/list}">
+					<span name="type" id="type" type="button" class="badge rounded-pill bg-primary"
+						data-bs-toggle="dropdown" aria-expanded="false">
+						제목 검색
+					</span>
+					<!-- <ul class="dropdown-menu">
+						<li><a class="dropdown-item" href="" style="display: none;">제목</a></li>
+					  </ul> -->
+					<!-- <select name="type" id="type" style="display: inline-block;">
+						<option value="">제목 검색</option>
+						<option value="title" style="display: none;">제목</option>
+						<option value="content" style="display: none;">내용</option>
+						<option value="writer" style="display: none;">작성자</option>
+					</select> -->
+					<input type="text" id="search_kw" name="keyword" class="form-control" th:value="${kw}"
+						style="display: inline-block;">
+					<input type="button" class="btn-outline" id="btn_search" value="검색"
+						style="display: inline-block; margin: 0;">
+					<input type="hidden" id="page" name="page" th:value="${boardEntityList.number}"
+						style="display: none;">
+				</form>
+				<form th:action="@{/board/list}" method="get" id="searchForm">
+					<input type="hidden" id="kw" name="kw" th:value="${kw}">
+					<input type="hidden" id="types" name="types" th:value="${type}">
+					<input type="hidden" id="tab_title" name="tab_title" th:value="${tabtitle}">
+					<input type="hidden" id="page2" name="page" th:value="${boardEntityList.number}">
+					<input type="hidden" id="page3" name="page" th:value="${companyEntityList.number}">
+					<input type="hidden" id="page4" name="page" th:value="${tradeEntityList.number}">
+				</form>
+			</div>
+
+			<div class="tab_cont">
+
+				<div class="on" name="review">
+					<!-- 리뷰 게시판 시작 -->
+					<table class="tbl_board" align="center" border="1" width="100%">
+						<thead>
+							<tr id="tagtbl" align="center" bgcolor="#0d6efd" style="color: antiquewhite;">
+								<th style="color: aliceblue;">글번호</th>
+								<th style="color: aliceblue;">작성자</th>
+								<th style="color: aliceblue;">제목</th>
+								<th style="color: aliceblue;">작성일</th>
+								<th style="color: aliceblue;">조회수</th>
+							</tr>
+						</thead>
+
+						<tbody th:if="${#strings.isEmpty(boardEntityList)}">
+							<tr height="10">
+								<td colspan="4">
+									<p align="center">
+										<b><span style="font-size: 9pt;">등록된 글이 없습니다.</span></b>
+									</p>
+								</td>
+							</tr>
+						</tbody>
+						<tbody th:unless="${#strings.isEmpty(boardEntityList)}" style="font-size: 20px;">
+							<tr align="center" th:each="article:${boardEntityList}"style="border-bottom: 1px solid grey">
+								<td width="5%">[[${articleStat.count}]]</td>
+								<td width="15%">[[${article.writeId}]]</td>
+								<td align="left" width="30%">
+									<form th:action="@{/board/view}" method="get" name="frm">
+										<input type="hidden" name="tabtitle" value="리뷰모음">
+										<input type="hidden" id="page" name="page" th:value="${boardEntityList.number}">
+										<input type="hidden" name="no" th:value="${article.articleNo}">
+										<span type="text" onclick="view(this)" style="justify-content:center; cursor: pointer;">[[${article.title}]]</span>
+									</form>
+								</td>
+								<td width="10%" th:text="${#temporals.format(article.writeDate, 'yyyy-MM-dd')}"></td>
+								<td width="8%">[[${article.views}]]</td>
+							</tr>
+
+						</tbody>
+
+						<p>
+
+						<form th:action="@{/board/add}" method="get">
+							<input type="hidden" name="tabtitle" value="리뷰모음">
+							<button class="cls3" type="submit" id="write-button">글쓰기</button>
+						</form>
+						<hr>
+						</p>
+					</table>
+
+					<div id="KIN" th:if="${!boardEntityList.isEmpty()}">
+						<ul class="pagination justify-content-center">
+							<li class="page-item" th:classappend="${!boardEntityList.hasPrevious} ? 'disabled'">
+								<a class="page-link" id="page-back" href="javascript:void(0)"
+									th:data-page="${boardEntityList.number-1}">
+									<span class="page-back">이전</span>
+								</a>
+							</li>
+							<li th:each="page: ${#numbers.sequence(0, boardEntityList.totalPages-1)}"
+								th:if="${page >= boardEntityList.number-5 and page <= boardEntityList.number+5}"
+								th:classappend="${page == boardEntityList.number} ? 'active'">
+								<a th:text="${page}" class="page-link" href="javascript:void(0)"
+									th:data-page="${page}"></a>
+							</li>
+							<li class="page-item" th:classappend="${!boardEntityList.hasNext} ? 'disabled'">
+								<a class="page-link" id="page-next" href="javascript:void(0)"
+									th:data-page="${boardEntityList.number+1}">
+									<span class="page-next">다음</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div name="company">
+					<table class="tbl_board" align="center" border="1" width="80%">
+						<thead>
+							<tr id="tagtbl" height="10" align="center" bgcolor="#0d6efd" style="color: antiquewhite;">
+								<th style="color: aliceblue;">글번호</th>
+								<th style="color: aliceblue;">작성자</th>
+								<th style="color: aliceblue;">제목</th>
+								<th style="color: aliceblue;">작성일</th>
+								<th style="color: aliceblue;">조회수</th>
+							</tr>
+						</thead>
+
+
+						<tbody th:if="${#strings.isEmpty(companyEntityList)}">
+							<tr height="10">
+								<td colspan="4">
+									<p align="center">
+										<b><span style="font-size: 9pt;">등록된 글이 없습니다.</span></b>
+									</p>
+								</td>
+							</tr>
+						</tbody>
+						<tbody th:unless="${#strings.isEmpty(companyEntityList)}" style="font-size: 20px;">
+							<tr align="center" th:each="article:${companyEntityList}" style="border-bottom: 1px solid grey">
+								<td width="5%">[[${articleStat.count}]]</td>
+								<td width="15%">[[${article.writeId}]]</td>
+								<td align="left" width="30%">
+									<form th:action="@{/board/view}" method="get" name="frm">
+										<input type="hidden" name="tabtitle" value="동행자구인">
+										<input type="hidden" id="page" name="page" th:value="${companyEntityList.number}">
+										<input type="hidden" name="no" th:value="${article.articleNo}">
+										<span type="text" onclick="view(this)" style="justify-content:center; cursor: pointer;">[[${article.title}]]</span>
+									</form>
+								</td>
+								<td width="10%" th:text="${#temporals.format(article.writeDate, 'yyyy-MM-dd')}"></td>
+								<td width="8%">[[${article.views}]]</td>
+
+								<!-- <td width="5%">[[${articleStat.count}]]</td>
+								<td width="20%"><img style="border-radius: 50%;  float: left; margin: 0; max-width: 15%; max-height: 15%;" th:src="${article.user.picture}" alt=""> [[${article.writeId}]]</td>
+								<td align="center" width="35%">
+									
+									<form th:action="@{/board/view}" method="get" name="frm">
+										<input type="hidden" name="tabtitle" value="동행자구인">
+										<input type="hidden" id="page" name="page"
+											th:value="${companyEntityList.number}">
+										<input type="hidden" name="no" th:value="${article.articleNo}">
+										<span onclick="view(this)" style="justify-content:center; cursor: pointer;">[[${article.title}]]</span>
+									</form>
+
+
+								</td>
+								<td width="10%" th:text="${#temporals.format(article.writeDate, 'yyyy-MM-dd')}"></td>
+								<td width="8%">[[${article.views}]]</td> -->
+							</tr>
+						</tbody>
+						<p>
+						<form th:action="@{/board/add}" method="get">
+							<input type="hidden" name="tabtitle" value="동행자구인">
+							<button class="cls3" type="submit" id="write-button">글쓰기</button>
+						</form>
+						<hr>
+						</p>
+					</table>
+					<div id="KIN" th:if="${!companyEntityList.isEmpty()}">
+						<ul class="pagination justify-content-center">
+							<li class="page-item" th:classappend="${!companyEntityList.hasPrevious} ? 'disabled'">
+								<a class="page-link" id="page-back" href="javascript:void(0)"
+									th:data-page="${companyEntityList.number-1}">
+									<span class="page-back">이전</span>
+								</a>
+							</li>
+							<li th:each="page: ${#numbers.sequence(0, companyEntityList.totalPages-1)}"
+								th:if="${page >= companyEntityList.number-5 and page <= companyEntityList.number+5}"
+								th:classappend="${page == companyEntityList.number} ? 'active'">
+								<a th:text="${page}" class="page-link" href="javascript:void(0)"
+									th:data-page="${page}"></a>
+							</li>
+							<li class="page-item" th:classappend="${!companyEntityList.hasNext} ? 'disabled'">
+								<a class="page-link" id="page-next" href="javascript:void(0)"
+									th:data-page="${companyEntityList.number+1}">
+									<span class="page-next">다음</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div name="trade">
+					<table class="tbl_board" align="center" border="1" width="80%">
+						<thead>
+							<tr id="tagtbl" height="10" align="center" bgcolor="#0d6efd" style="color: antiquewhite;">
+								<th style="color: aliceblue;">글번호</th>
+								<th style="color: aliceblue;">작성자</th>
+								<th style="color: aliceblue;">제목</th>
+								<th style="color: aliceblue;">작성일</th>
+								<th style="color: aliceblue;">조회수</th>
+							</tr>
+						</thead>
+
+						<tbody th:if="${#strings.isEmpty(tradeEntityList)}">
+							<tr height="10">
+								<td colspan="4">
+									<p align="center">
+										<b><span style="font-size: 9pt;">등록된 글이 없습니다.</span></b>
+									</p>
+								</td>
+							</tr>
+						</tbody>
+						<tbody th:unless="${#strings.isEmpty(tradeEntityList)}" style="font-size: 20px;">
+							<tr align="center" th:each="article:${tradeEntityList}" style="border-bottom: 1px solid grey">
+								<td width="5%">[[${articleStat.count}]]</td>
+								<td width="15%">[[${article.writeId}]]</td>
+								<td align="left" width="30%">
+									<form th:action="@{/board/view}" method="get" name="frm">
+										<input type="hidden" name="tabtitle" value="거래시스템">
+										<input type="hidden" id="page" name="page" th:value="${tradeEntityList.number}">
+										<input type="hidden" name="no" th:value="${article.articleNo}">
+										<span type="text" onclick="view(this)" style="justify-content:center; cursor: pointer;">[[${article.title}]]</span>
+									</form>
+								</td>
+								<td width="10%" th:text="${#temporals.format(article.writeDate, 'yyyy-MM-dd')}"></td>
+								<td width="8%">[[${article.views}]]</td>
+
+								<!-- <td width="5%">[[${articleStat.count}]]</td>
+								<td width="20%"><img style="border-radius: 50%;  float: left; margin: 0; max-width: 15%; max-height: 15%;" th:src="${article.user.picture}" alt=""> [[${article.writeId}]]</td>
+								<td align="center" width="35%">
+									<form th:action="@{/board/view}" method="get" name="frm">
+										<input type="hidden" name="tabtitle" value="거래시스템">
+										<input type="hidden" id="page" name="page" th:value="${tradeEntityList.number}">
+										<input type="hidden" name="no" th:value="${article.articleNo}">
+										<span onclick="view(this)" style="justify-content:center; cursor: pointer;">[[${article.title}]]</span>
+									</form>
+								</td>
+								<td width="10%" th:text="${#temporals.format(article.writeDate, 'yyyy-MM-dd')}"></td>
+								<td width="8%">[[${article.views}]]</td> -->
+							</tr>
+
+						</tbody>
+
+						<p>
+						<form th:action="@{/board/add}" method="get">
+							<input type="hidden" name="tabtitle" value="거래시스템">
+							<button class="cls3" type="submit" id="write-button">글쓰기</button>
+						</form>
+						<hr>
+						</p>
+					</table>
+					<div id="KIN" th:if="${!tradeEntityList.isEmpty()}">
+						<ul class="pagination justify-content-center">
+							<li class="page-item" th:classappend="${!tradeEntityList.hasPrevious} ? 'disabled'">
+								<a class="page-link" id="page-back" href="javascript:void(0)"
+									th:data-page="${tradeEntityList.number-1}">
+									<span class="page-back">이전</span>
+								</a>
+							</li>
+							<li th:each="page: ${#numbers.sequence(0, tradeEntityList.totalPages-1)}"
+								th:if="${page >= tradeEntityList.number-5 and page <= tradeEntityList.number+5}"
+								th:classappend="${page == tradeEntityList.number} ? 'active'">
+								<a th:text="${page}" class="page-link" href="javascript:void(0)"
+									th:data-page="${page}"></a>
+							</li>
+							<li class="page-item" th:classappend="${!tradeEntityList.hasNext} ? 'disabled'">
+								<a class="page-link" id="page-next" href="javascript:void(0)"
+									th:data-page="${tradeEntityList.number+1}">
+									<span class="page-next">다음</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<script layout:fragment="script" type='text/javascript'>
+
+				function view(t) {
+					console.log("asdasdfgasdas")
+					t.parentElement.submit(t);
+				}
+
+				const page_elements = document.getElementsByClassName("page-link");
+				Array.from(page_elements).forEach(function (element) {
+					element.addEventListener('click', function () {
+						document.getElementById('page2').value = this.dataset.page;
+						document.getElementById('page3').value = this.dataset.page;
+						document.getElementById('page4').value = this.dataset.page;
+						
+						document.getElementById('searchForm').submit();
+					});
+				});
+
+				const btn_search = document.getElementById("btn_search");
+				btn_search.addEventListener('click', function () {
+					document.getElementById('kw').value = document.getElementById('search_kw').value;
+					document.getElementById('types').value = document.getElementById('type').value;
+					document.getElementById('page').value = 0;  // 검색버튼을 클릭할 경우 0페이지부터 조회한다.
+					// document.getElementById('tab_title').value = document.getElementsByName('tabtitle').value;
+					document.getElementById('searchForm').submit();
+				});
+			</script>
+		</div>
+
+	</div>
+
+	<script th:inline="javascript">
+		$(document).ready(function () {
+			$(".tab_title li").click(function () {
+				var idx = $(this).index();
+				$(".tab_title li").removeClass("on");
+				$(".tab_title li").eq(idx).addClass("on");
+				$(".tab_cont > div").removeClass("on");
+				$(".tab_cont > div").eq(idx).addClass("on");
+				console.log($(".tab_title > li").eq(idx).text());
+				document.getElementsByName("tab_title")[0].value = $(".tab_title > li").eq(idx).html();
+
+				$(".tab_cont > div").hide();
+				$(".tab_cont > div").eq(idx).show();
+			})
+		});
+
+		$(document).ready(function () {
+			$("li").each(function () {
+				let tab_title = document.getElementById("tab_title").value
+				if($(this).text() == tab_title){
+					$(this).click();
+				}
+			});
+			
+
+		});
+
+	</script>
+
+	<script th:inline="javascript">
+		$(document).ready(function () {
+			$(".tab_title li").click(function () {
+				var idx = $(this).index();
+				$(".tab_title li").removeClass("on");
+				$(".tab_title li").eq(idx).addClass("on");
+				$(".tab_cont > div").removeClass("on");
+				$(".tab_cont > div").eq(idx).addClass("on");
+				$(".tab_cont > div").hide();
+				$(".tab_cont > div").eq(idx).show();
+			})
+		});
+	</script>
+
+<input type="hidden" id="loginUserId" th:value="${loginUser}">
+    <script src="/js/pushAlarm.js"></script>
+</body>
+
+</html>

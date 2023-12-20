@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>선택관광지수정</title>
+
+  <script defer
+    src="https://maps.googleapis.com/maps/api/js?key=your_Google_Maps_Api_Key_here&callback=initMap"></script>
+
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+
+  <!-- 부트스트랩 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+    crossorigin="anonymous"></script>
+
+  <!-- 경고창 디자인 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+  <style>
+        body{
+      background-image: url('https://i.pinimg.com/564x/e0/e9/70/e0e970228e55c7d951e1c38607e6ef51.jpg');
+      background-size: cover;
+    }
+    .box {
+      width: 100px;
+      height: 100px;
+      border-radius: 70%;
+      overflow: hidden;
+      margin: auto;
+    }
+
+    .profile {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+
+    }
+
+
+    .boxs {
+      width: 50px;
+      height: 50px;
+      border-radius: 70%;
+      overflow: hidden;
+      margin: 10px;
+      margin-left: -10px;
+
+    }
+
+    .profiles {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+
+    }
+
+    .card-img-top {
+      width: 283px;
+      height: 200px;
+      margin: 2px;
+    }
+
+    .spans {
+      justify-content: center;
+      align-items: center;
+      display: flex;
+    }
+
+    .divs {
+      justify-content: center;
+      align-items: center;
+      display: flex;
+    }
+
+    #navbarNav {
+      display: flex;
+      justify-content: center;
+    }
+
+
+    .divs.draggable {
+      border-bottom: 2px solid #cccccc81;
+      /* 밑줄 스타일 및 색상을 설정합니다. */
+
+    }
+
+    .weather {
+      height: 60px;
+      background: linear-gradient(to right, rgb(21, 108, 240), lightblue);
+      border-bottom: 1px solid #ccc;
+      font-weight: bold;
+      color: white;
+      font-size: 25px;
+      border-radius: 25px;
+    }
+
+    .card {
+      margin: 10px;
+      border: none;
+      /* 테두리 없애기 */
+      border-radius: 30px;
+      /* 테두리 둥글게 */
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      /* 그림자 효과 */
+    }
+
+    .card-title,
+    .card-weather {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 10px;
+      color: rgb(83, 137, 219);
+    }
+
+    /* 스위치의 크기 조정 */
+    .form-switch .form-check-input {
+      width: 50px;
+      /* 스위치의 가로 크기를 조절하세요. */
+      height: 30px;
+      /* 스위치의 세로 크기를 조절하세요. */
+    }
+
+    .form-switch {
+      position: relative;
+      display: inline-block;
+      width: 45px;
+      height: 30px;
+      left: 70px;
+      top: 18px;
+    }
+
+    .form-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .form-switch .form-check-label {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 6;
+      bottom: 0;
+      height: 12px;
+      background-color: #fff;
+      box-shadow: 1px 1px 3px #eaeaea, -1px -1px 3px #eaeaea;
+      border-radius: 20px;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    .form-switch .form-check-label:before {
+      position: absolute;
+      content: "";
+      height: 22px;
+      width: 22px;
+      left: 0px;
+      top: -5px;
+      background-image: url("https://cdn-icons-png.flaticon.com/512/7687/7687029.png");
+      background-size: 15px;
+      background-position: center;
+      background-color: #fff;
+      background-repeat: no-repeat;
+      -webkit-transition: .5s;
+      transition: .4s;
+      border-radius: 20px;
+      box-shadow: 1px 1px 3px #eaeaea;
+
+    }
+
+    .form-switch input:checked+.form-check-label {
+      background-color: #ffffff;
+      box-shadow: 1px 1px 3px #eaeaea, -1px -1px 3px #eaeaea;
+    }
+
+    .form-switch input:checked+.form-check-label:before {
+      background-image: url("https://cdn-icons-png.flaticon.com/512/1809/1809714.png");
+      background-color: #ffffff;
+      box-shadow: 1px 1px 3px #eaeaea;
+      -webkit-transform: translateX(16px);
+      -ms-transform: translateX(16px);
+      transform: translateX(16px);
+    }
+
+    .form-check.form-switch {
+      transform: scale(2.0);
+      /* 원하는 크기로 확대합니다. */
+    }
+
+    .plandiv {
+
+      position: relative;
+      width: 300px;
+      margin-left: 760px;
+      margin-top: 100px;
+    }
+
+    .planinput {
+      font-size: 15px;
+      color: #222222;
+      width: 300px;
+      border: none;
+      border-bottom: solid #aaaaaa 1px;
+      padding-bottom: 10px;
+      padding-left: 10px;
+      position: relative;
+      background: none;
+      z-index: 5;
+    }
+
+    .planinput::placeholder {
+      color: #aaaaaa;
+    }
+
+    .planinput:focus {
+      outline: none;
+    }
+
+    .planspan {
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0%;
+      /* right로만 바꿔주면 오 - 왼 */
+      background-color: #666;
+      width: 0;
+      height: 2px;
+      border-radius: 2px;
+      transition: 0.5s;
+    }
+
+    .planlabel {
+      position: absolute;
+      color: #aaa;
+      left: 10px;
+      font-size: 20px;
+      bottom: 8px;
+      transition: all .2s;
+    }
+
+    .planinput:focus~.planlabel,
+    .planinput:valid~.planlabel {
+      font-size: 16px;
+      bottom: 40px;
+      color: #666;
+      font-weight: bold;
+    }
+
+    .planinput:focus~.planspan,
+    input:valid~.planspan {
+      width: 100%;
+    }
+
+
+    #totalPlace {
+      width: 1500px;
+      padding: 20px;
+      overflow: scroll;
+      /* 가로 스크롤 */
+      overflow: auto;
+      white-space: nowrap;
+    }
+
+    #totalPlace::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    #totalPlace::-webkit-scrollbar-thumb {
+      background-color: #3c77f560;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(transparent, #3c77f5, transparent);
+    }
+
+    #totalPlace::-webkit-scrollbar-track {
+      background-color: lightblue;
+      border-radius: 10px;
+      box-shadow: inset 0px 0px 5px white;
+    }
+
+    .container::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    .container::-webkit-scrollbar-thumb {
+      background-color: #3c77f560;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(transparent, #3c77f5, transparent);
+    }
+
+    .container::-webkit-scrollbar-track {
+      background-color: lightblue;
+      border-radius: 10px;
+      box-shadow: inset 0px 0px 5px white;
+    }
+
+
+
+    .stext {
+      position: absolute;
+      top: 50%;
+      /* 이미지 중앙에 텍스트 정렬 */
+      left: 50%;
+      transform: translate(-50%, -50%);
+      /* 텍스트 중앙 정렬을 위한 이동 */
+      color: white;
+      /* 텍스트 색상 설정 */
+      padding: 10px;
+      /* 텍스트 주변 여백 설정 */
+      text-align: center;
+      opacity: 0;
+      /* 초기에는 숨김 */
+      transition: opacity 0.5s;
+      font-size: 150%;
+    }
+
+    .cardSearch:hover .stext {
+      opacity: 1;
+      /* 호버 시 텍스트 나타남 */
+    }
+
+    .card-img-top {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 5px 7px 1px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-img-top:hover {
+      transform: scale(1.1);
+      transition: transform 0.5s;
+      filter: brightness(70%);
+    }
+
+    .cardSearch {
+      margin: 5px;
+      border: none;
+    }
+
+    .draggable:hover .btn-outline-danger {
+      display: block;
+    }
+
+    .draggable:hover .card-title {
+      display: none;
+    }
+
+    .draggable:hover .card-weather {
+      display: none;
+    }
+
+    .btn-outline-danger {
+      display: none;
+    }
+    h1 {
+            margin: auto auto auto 35%;
+            font-size: 5em;
+            font-family: "Lobster", cursive;
+            color: rgb(254, 254, 254);
+            text-shadow: -2px -2px 0 rgb(0, 68, 255);
+        }
+  </style>
+  <!-- 플랜이름 복사 -->
+  <script>
+    function PNC(t) {
+      $('#rain').val(t.value);
+    }
+
+  </script>
+
+
+  <!-- 장고부분 -->
+  <script th:inline="javascript">
+
+    async function lookUp(frm) {
+      if ($('input[name="uploadName"]').val() == "") {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "관광지 이름, 국가 그리고 도시를 입력해주세요",
+
+        });
+        return false;
+      } else {
+        let formData = new FormData(frm);
+
+        const options = {
+          method: "post",
+          body: formData
+        }
+
+        try {
+          let response = await fetch(/*[[@{/project/find}]]*/ '', options);
+
+          let findname = await response.json();
+
+
+          let name_tag = document.querySelector('#foundName');
+          let address_tag = document.querySelector('#address');
+          let global_code_tag = document.querySelector('#global_code');
+          let compound_code_tag = document.querySelector('#compound_code');
+          let lat_tag = document.querySelector('#lat');
+          let lng_tag = document.querySelector('#lng');
+
+          let Image_tag = document.querySelector('#image');
+          let Img_tag = document.querySelector('#imgTag');
+
+
+          // let input_tag = document.getElementsByName("foundNames")[0];
+          $('#aaa input[name="foundNames"]').val(findname.name)
+
+
+          // input_tag.val = findname.name;
+          name_tag.textContent = findname.name;
+          address_tag.textContent = findname.address;
+          global_code_tag.textContent = findname.global_code;
+          compound_code_tag.textContent = findname.compound_code;
+          lat_tag.textContent = findname.lat;
+          lng_tag.textContent = findname.lng;
+
+          Img_tag.src = findname.image;
+          Image_tag.textContent = findname.image;
+
+          // catdog(json) 형태 catordog가 키값
+        } catch (err) {
+          alert(err);
+        }
+
+        $('#aaa').show();
+
+      }
+
+
+
+    }
+
+
+
+  </script>
+
+  <!-- 나라별 도시 -->
+  <script th:inline="javascript">
+
+    function cityfromcountry() {
+
+      let citysNames = document.getElementsByName('selectedCountry');
+      let citysNamesLength = citysNames.length;
+      for (var i = 0; i < citysNamesLength; i++) {
+        citysNames[0].remove()
+      }
+
+      let cityArray = new Array();
+      let cityInfos = new Object();
+      /*[# th:each="city : ${cityList}"]*/
+      cityInfos = new Object();
+      cityInfos.id =  /*[[${city.getEntityCountryDto().getCountryId()}]]*/
+        cityInfos.Cid =  /*[[${city.cityId}]]*/
+        cityInfos.name =  /*[[${city.cityName}]]*/
+        cityArray.push(cityInfos);
+      /*[/]*/
+
+      let city = document.getElementById('selectCountry');
+
+      city = city.options[city.selectedIndex].value;
+
+      for (var i = 0; i < cityArray.length; i++) {
+        if (city == cityArray[i].id) {
+          let options = document.createElement('option');
+          options.setAttribute('value', cityArray[i].id);
+          options.innerHTML = cityArray[i].name;
+          options.setAttribute('name', "selectedCountry");
+          options.setAttribute('class', cityArray[i].Cid);
+          document.getElementById("CityOfCountry").appendChild(options);
+        }
+      }
+    }
+  </script>
+
+  <script>
+    function PNC(t) {
+      $('#rain').val(t.value);
+    }
+
+  </script>
+
+</head>
+
+<body>
+  <nav th:replace="~{nav :: navbarFragment}"></nav>
+  <h1>T A L A R I A</h1>
+
+
+  <input type="hidden" id="loginUserId" th:value="${loginUser}">
+  <script src="/js/pushAlarm.js"></script>
+
+
+
+
+
+  <!-- 일반 날씨 -->
+  <form th:action="@{/project/addPlan}" method="post">
+    <div class="plandiv" style="display: flex;justify-content: center; align-items: center;">
+      <input type="text" name="date" th:value="${date}" style="display: none;">
+      <input class="planinput" id="sun" type="text" name="planName" value="" onchange="PNC(this)" required>
+      <label class="planlabel">Plan</label>
+      <span class="planspan"></span>
+
+      <div class="form-check form-switch" style="display: inline-block;">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <label class="form-check-label" for="flexSwitchCheckDefault"></label>
+      </div>
+    </div>
+    <div class="asdf" style="display: flex;justify-content: center; align-items: center;">
+      <div class="place suggestion_list" id="totalPlace">
+
+        <div class="card" style="width: 18rem; display: inline-flex" th:each="single:${basketList}"
+          th:id="${single.key}">
+          <span class="spans weather" onclick="func1(this)">[[${single.key}]]</span>
+
+          <div class="container" style="overflow:auto; height: 20rem;" th:id="${single.key}" name="pastehea">
+            <div class="divs draggable" id="Wbefore" style="display: flex;" th:each="place:${single.value}">
+              <div class="boxs" style="background: #BDBDBD;">
+                <img class="profiles" th:src="${place.img}">
+              </div>
+
+              <h5 class="card-title" style="top: 50%; width: 194px; text-align: center;" th:id="${single.key}">
+                [[${place.name}]]
+              </h5>
+              <button type="button" class="btn btn-outline-danger" onclick="removePlace(this)">삭제</button>
+              <p class="lat" th:id="${single.key}" style="display: none;">[[${place.lat}]]</p>
+              <p class="lan" th:id="${single.key}" style="display: none;">[[${place.lan}]]</p>
+              <input class="btn btn-primary" type="hidden" name="placeId" th:value="${place.pk}">
+              <input class="btn btn-primary" type="hidden" name="inOnt" th:value="${place.inOut}">
+            </div>
+            <input class="btn btn-primary" type="hidden" name="num" value="">
+            <input class="btn btn-primary" type="hidden" name="days" th:value="${single.key}">
+          </div>
+
+          <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#plusPlace"
+            aria-controls="offcanvasScrolling" th:id="${single.key}" onclick="addPlace(this)">여행지 추가하기</button>
+          <!-- 날씨 부분 -->
+
+          <div th:each="weather:${weatherList}" th:if="${weather.key} == ${single.key}">
+            <div th:each="arr, index:${weather.value}">
+              <div th:if="${index.index} == 0">
+                <input type="hidden" th:value="${arr}">
+              </div>
+              <div class="box" style="background: #BDBDBD;" th:if="${index.index} == 1">
+                <img class="profile" th:src="${arr}">
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <button class="btn btn-outline-primary" type="submit">저장</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- 비올때 -->
+  <form th:action="@{/project/addPlan}" method="post">
+    <div class="plandiv" style="display: none;">
+      <input type="text" name="date" th:value="${date}" style="display: none;">
+      <input type="text" id="rain" name="planName" value="">
+    </div>
+    <div style="display: flex;justify-content: center; align-items: center;">
+
+      <div class="qwer" id="totalPlace" style="display: none; ">
+        <div class="card" style="width: 18rem; display: inline-flex" th:each="single:${filter}" th:id="${single.key}">
+          <span class="spans weather" onclick="func3(this)">[[${single.key}]]</span>
+
+          <div class="container" style="overflow:auto; height: 20rem;" th:id="${single.key}" name="pastebi">
+
+            <div class="divs draggable" id="Wafter" style="display: flex;" th:each="place:${single.value}">
+              <div class="boxs" style="background: #BDBDBD;">
+                <img class="profiles" th:src="${place.img}">
+              </div>
+              <h5 class="card-weather" style="top: 50%; width: 194px; text-align: center;" th:id="${single.key}">
+                [[${place.name}]]
+              </h5>
+              <button type="button" class="btn btn-outline-danger" onclick="removebi(this)">삭제</button>
+              <p class="lat-weather" th:id="${single.key}" style="display: none;">[[${place.lat}]]</p>
+              <p class="lan-weather" th:id="${single.key}" style="display: none;">[[${place.lan}]]</p>
+              <input class="btn btn-primary" type="hidden" name="placeId" th:value="${place.pk}">
+              <input class="btn btn-primary" type="hidden" name="inOnt" th:value="${place.inOut}">
+            </div>
+
+            <input class="btn btn-primary" type="hidden" name="num" value="">
+            <input class="btn btn-primary" type="hidden" name="days" th:value="${single.key}">
+          </div>
+
+
+          <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#plusPlace"
+            aria-controls="offcanvasScrolling" th:id="${single.key}" onclick="addPlacebi(this)">여행지 추가하기</button>
+
+
+          <div th:each="weather:${weatherList}" th:if="${weather.key} == ${single.key}">
+            <div th:each="arr, index:${weather.value}">
+              <div th:if="${index.index} == 0">
+                <input type="hidden" th:value="${arr}">
+              </div>
+              <div class="box" style="background: #BDBDBD;" th:if="${index.index} == 1">
+                <img class="profile" th:src="${arr}">
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <button class="btn btn-outline-primary" type="submit">저장</button>
+      </div>
+    </div>
+  </form>
+
+
+  <!-- 구글맵부분 -->
+  <div style="display: flex;justify-content: center; align-items: center;">
+    <div id="divMap">
+      <h3><span>ROUTE</span></h3>
+
+      <div id="map" style="height: 700px; width: 1300px; display: inline-block; "></div>
+    </div>
+  </div>
+
+
+  <!-- 날씨 필터 함수 -->
+  <script>
+    $('#flexSwitchCheckDefault').on('change', function () {
+      if (this.checked) {
+        $('.qwer').show();
+        $('.asdf').hide();
+
+      } else {
+        $('.qwer').hide();
+        $('.asdf').show();
+      }
+    });
+  </script>
+
+
+  <!-- 모달창 -->
+  <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="plusPlace"
+    aria-labelledby="plusPlaceLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="plusPlaceLabel">여행지 검색</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <form action="" method="post" id="frm">
+      <div class="offcanvas-body">
+        <select class="form-select" id="selectCountry"
+          style="width:300px;height:50px; display: inline-block;border: none;box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);margin: 10px"
+          aria-label="Default select example" onchange="cityfromcountry()">
+          <option selected name="selectName">Select country</option>
+          <!-- 전체 국가 리스트 표시 -->
+          <option th:each="country:${totalCountry}" th:value="${country.countryId}">[[${country.countryName}]]
+          </option>
+        </select>
+
+        <select class="form-select"
+          style="width:300px;height:50px; display: inline-block;border: none;box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);margin: 10px"
+          aria-label="Default select example" id="CityOfCountry">
+          <option selected>Select city</option>
+        </select>
+
+        <input type="hidden" id="selectedcity" name="cityForplace">
+
+
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="floatingInput"
+            style="width: 200px; display: inline-block; margin: 10px;border: none;box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.5);"
+            name="uploadName">
+          <label for="floatingInput" style="margin: 10px;">관광지 이름</label>
+          <input id="radioId" type="radio" name="radioTxt" value="0" checked>실내
+          <input id="radioId" type="radio" name="radioTxt" value="1">실외
+        </div>
+        <button type="button" onclick="lookUp(frm)" class="btn btn-outline-primary"
+          style="display: inline-block;border: none;box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.5);">찾기</button>
+    </form>
+
+    <script type="text/javascript">
+      $('#CityOfCountry').on('change', function () {
+        $('#selectedcity').val($('#CityOfCountry option:selected').attr('class'));
+      });
+    </script>
+
+    <!-- 원본 -->
+    <div class="section1" id="aaa" style="display: none;">
+      <div class="section1 searchList" id="copy">
+        <div class="cardSearch" style="width: 18rem; display: inline-block;">
+
+          <h5 class="card-title" id="foundName">검색된 관광지 이름</h5>
+          <img id="imgTag" src="https://i.pinimg.com/564x/9c/3c/d2/9c3cd21c9f7d48b48125fe93ba799445.jpg"
+            class="card-img-top" alt="사진없어" style="width: 283px; height: 200px;" onclick="moves(this)">
+          <span class="stext" style="font-weight: bolder;">담기/삭제</span>
+          <div class="card-body" style="display: none;">
+            <input name="foundNames" type="hidden" value="">
+            <p id="address" style="display: none;">검색된 관광지 주소</p>
+            <p style="display: none;" id="global_code">글로벌 코드</p>
+            <p style="display: none;" id="compound_code">컴파운드 코드</p>
+            <p style="display: none;" id="lat">위도</p>
+            <p style="display: none;" id="lng">경도</p>
+            <p style="display: none;" id="image">이미지</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="addBasket" style="display:none;">
+      <div class="copyhea" name="cop">
+        <div class="divs draggable" id="Wbefore" style="display: flex;">
+          <div class="boxs" style="background: #BDBDBD;">
+            <img class="profiles" id="addimage" src="">
+          </div>
+          <h5 class="card-title" style="top: 50%; width: 194px; text-align: center;" id="">
+            이름
+          </h5>
+          <button type="button" class="btn btn-outline-danger" onclick="removePlace(this)">삭제</button>
+          <p class="lat" id="" style="display: none;">위도</p>
+          <p class="lan" id="" style="display: none;">경도</p>
+          <input class="btn btn-primary" type="hidden" name="placeId" value="">
+          <input class="btn btn-primary" type="hidden" name="inOnt" value="">
+        </div>
+      </div>
+
+      <div class="copybi">
+        <div class="divs draggable" id="Wafter" style="display: flex;">
+          <div class="boxs" style="background: #BDBDBD;">
+            <img class="profiles" id="addimagebi" src="">
+          </div>
+          <h5 class="card-weather" style="top: 50%; width: 194px; text-align: center;" id="" name="bi">
+            이름
+          </h5>
+          <button type="button" class="btn btn-outline-danger" onclick="removebi(this)">삭제</button>
+          <p class="lat-weather" id="" style="display: none;">위도</p>
+          <p class="lan-weather" id="" style="display: none;">경도</p>
+          <input class="btn btn-primary" type="hidden" name="placeId" value="">
+          <input class="btn btn-primary" type="hidden" name="inOnt" value="">
+        </div>
+      </div>
+    </div>
+
+  </div>
+  </div>
+  </div>
+  <!-- 여행지 추가, 지도, 드래그 함수 -->
+  <script>
+    let singleDate;
+    let position;
+    let position2;
+
+    function addPlace(t) {
+      singleDate = t.id;
+      position = t.previousElementSibling;
+      position2 = $('[class="container"][name="pastebi"][id=' + singleDate + ']');
+
+      console.log(position2);
+    }
+
+    function addPlacebi(t) {
+      singleDate = t.id;
+      position2 = t.previousElementSibling;
+      position = $('[class="container"][name="pastehea"][id=' + singleDate + ']');
+
+      console.log(position2);
+    }
+
+    function moves(t) {
+      console.log(singleDate);
+      $('.addBasket').find('.card-title').text($('#foundName').text());
+      $('.addBasket').find('.card-title').attr('id', singleDate);
+      $('.addBasket').find('.card-weather').text($('#foundName').text());
+      $('.addBasket').find('.card-weather').attr('id', singleDate);
+      $('.addBasket').find('.lat').attr('id', singleDate);
+      $('.addBasket').find('.lat-weather').attr('id', singleDate);
+      $('.addBasket').find('.lan').attr('id', singleDate);
+      $('.addBasket').find('.lan-weather').attr('id', singleDate);
+      $('.addBasket').find('.lat').text($('#lat').text());
+      $('.addBasket').find('.lat-weather').text($('#lat').text());
+      $('.addBasket').find('.lan').text($('#lng').text());
+      $('.addBasket').find('.lan-weather').text($('#lng').text());
+      $('.addBasket').find('input[name=placeId]').val($('#foundName').text());
+      $('.addBasket').find('input[name=inOnt]').val($('input[name=radioTxt]:checked').val());
+      $('.addBasket').find('#addimage').attr('src', $('#image').text());
+      $('.addBasket').find('#addimagebi').attr('src', $('#image').text());
+
+
+      $('.copyhea').children().clone(true).appendTo(position);
+      $('.copybi').children().clone(true).appendTo(position2);
+      dragcall()
+      loop()
+    }
+
+
+    var namelist = [];
+    var latlist = [];
+    var lnglist = [];
+    var list = [];
+    var map;
+    var marker;
+    var markers = [];
+    var t;
+
+    $('.card-title ').each(function () {
+      var text = $(this).text();
+      namelist.push(text);
+    });
+
+    $('.lat').each(function () {
+      var lat = $(this).text();
+      latlist.push(lat);
+    });
+
+    $('.lan').each(function () {
+      var lng = $(this).text();
+      lnglist.push(lng);
+    });
+
+    var a = 0
+    var b = 0
+    for (let i = 0; i < namelist.length; i++) {
+      a = a + Number(latlist[i]) //가져온 관광지 위도 경도 합치기1
+      b = b + Number(lnglist[i]) //가져온 관광지 위도 경도 합치기2
+    };
+
+    centerLat = a / namelist.length;   //중심 위치 설정1
+    centerLng = b / namelist.length;   //중심 위치 설정2
+
+    window.initMap = function () { //실제로 맵을 뛰워주는 곳 new google.maps.Map 이 뛰움
+      map = googleMap(25);
+
+      for (let i = 0; i < namelist.length; i++) {
+        marker = new google.maps.Marker({
+          position: { lat: Number(latlist[i]), lng: Number(lnglist[i]) },
+          label: namelist[i],
+          map: map
+        })
+        markers.push(marker);
+      };
+    };
+
+    function googleMap() {
+      var maps = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: centerLat, lng: centerLng },
+        zoom: 13
+      });
+
+      return maps;
+    }
+
+    // 날씨 필터링 전 일별 경로 표시
+    function func1(t) {
+      var val = t.innerHTML;
+
+      if ($('[class="container"][id=' + val + ']').find('input[name="num"]').val() == 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "선택한 날짜에 관광지가 없습니다.",
+
+                });
+                return false
+            } else {
+                this.t = t;
+                make(t);
+            }
+    }
+
+    function make(t) {
+      namelist = [];
+      latlist = [];
+      lnglist = [];
+      list = [];
+
+      var val = t.innerHTML;
+
+      if ($('[class="container"][id=' + val + ']').find('input[name="num"]').val() == 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "선택한 날짜에 관광지가 없습니다.",
+
+                });
+                return false
+            }else{
+
+      $('[class="container"][id=' + val + ']').find('[class="card-title"][id=' + val + ']').each(function () {
+        // $('[class="card-title"][id=' + val + ']').each(function () {
+        var text = $(this).text();
+        namelist.push(text);
+      });
+
+      $('[class="container"][id=' + val + ']').find('[class="lat"][id=' + val + ']').each(function () {
+        // $('[class="lat"][id=' + val + ']').each(function () {
+        var lat = $(this).text();
+        latlist.push(lat);
+      });
+      $('[class="container"][id=' + val + ']').find('[class="lan"][id=' + val + ']').each(function () {
+        // $('[class="lan"][id=' + val + ']').each(function () {
+        var lng = $(this).text();
+        lnglist.push(lng);
+      });
+
+      for (let i = 0; i < namelist.length; i++) {
+        a = a + Number(latlist[i]) //가져온 관광지 위도 경도 합치기1
+        b = b + Number(lnglist[i]) //가져온 관광지 위도 경도 합치기2
+      };
+
+      centerLat = a / namelist.length;   //중심 위치 설정1
+      centerLng = b / namelist.length;   //중심 위치 설정2
+
+      var str = latlist[0] + "," + lnglist[0];
+      var str1 = latlist[latlist.length - 1] + "," + lnglist[lnglist.length - 1];
+
+      map = googleMap();
+
+      const directionsService = new google.maps.DirectionsService();
+      const directionsRenderer = new google.maps.DirectionsRenderer({ map, });
+
+
+      for (let i = 1; i < namelist.length - 1; i++) {
+        var dictObject = {}
+        dictObject['location'] = latlist[i] + "," + lnglist[i];
+        console.log(dictObject);
+        list.push(dictObject);
+      };
+
+      displayRoute(
+        str, // 박물관
+        str1, // 타워브릿지
+        list,
+        directionsService,
+        directionsRenderer,
+      );
+    }
+    }
+
+    function displayRoute(origin, destination, list, service, display) {
+      service.route({
+        origin: origin,
+        destination: destination,
+        waypoints: list,
+        travelMode: google.maps.TravelMode.WALKING,
+        avoidTolls: true,
+      })
+        .then((result) => {
+          display.setDirections(result);
+        })
+        .catch((e) => {
+          alert("Could not display directions due to: " + e);
+        });
+      window.initMap = initMap;
+    }
+
+    // 날씨 필터링 후 경로 표시
+    function func3(t) {
+      var val = t.innerHTML;
+      
+      if ($('[name="pastebi"][id=' + val + ']').find('input[name="num"]').val() == 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "선택한 날짜에 관광지가 없습니다.",
+
+                });
+                return false
+            }else{
+                this.t = t;
+            make2(t);
+            }
+    }
+
+    function make2(t) {
+      namelist = [];
+      latlist = [];
+      lnglist = [];
+      list = [];
+      a = 0;
+      b = 0;
+      centerLng = 0;
+      centerLat = 0;
+
+
+      var val = t.innerHTML;
+      if ($('[name="pastebi"][id=' + val + ']').find('input[name="num"]').val() == 0) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "선택한 날짜에 관광지가 없습니다.",
+
+                });
+                return false
+            }else{
+
+      $('[class="container"][id=' + val + ']').find('[class="card-weather"][id=' + val + ']').each(function () {
+        // $('[class="card-weather"][id=' + val + ']').each(function () {
+        console.log("asd")
+        var text = $(this).text();
+        namelist.push(text);
+      });
+      $('[class="container"][id=' + val + ']').find('[class="lat-weather"][id=' + val + ']').each(function () {
+        // $('[class="lat-weather"][id=' + val + ']').each(function () {
+        var lat = $(this).text();
+        latlist.push(lat);
+      });
+      $('[class="container"][id=' + val + ']').find('[class="lan-weather"][id=' + val + ']').each(function () {
+        // $('[class="lan-weather"][id=' + val + ']').each(function () {
+        var lng = $(this).text();
+        lnglist.push(lng);
+      });
+
+      for (let i = 0; i < namelist.length; i++) {
+        a = a + Number(latlist[i]) //가져온 관광지 위도 경도 합치기1
+        b = b + Number(lnglist[i]) //가져온 관광지 위도 경도 합치기2
+      };
+
+      centerLat = a / namelist.length;   //중심 위치 설정1
+      centerLng = b / namelist.length;   //중심 위치 설정2
+
+      var str = latlist[0] + "," + lnglist[0];
+      var str1 = latlist[latlist.length - 1] + "," + lnglist[lnglist.length - 1];
+
+      map = googleMap();
+
+      const directionsService = new google.maps.DirectionsService();
+      const directionsRenderer = new google.maps.DirectionsRenderer({ map, });
+
+
+      for (let i = 1; i < namelist.length - 1; i++) {
+        var dictObject = {}
+        dictObject['location'] = latlist[i] + "," + lnglist[i];
+        console.log(dictObject);
+        list.push(dictObject);
+      };
+
+      displayRoute2(
+        str, // 박물관
+        str1, // 타워브릿지
+        list,
+        directionsService,
+        directionsRenderer,
+      );
+    }
+    }
+
+    function displayRoute2(origin, destination, list, service, display) {
+      service.route({
+        origin: origin,
+        destination: destination,
+        waypoints: list,
+        travelMode: google.maps.TravelMode.WALKING,
+        avoidTolls: true,
+      })
+        .then((result) => {
+          display.setDirections(result);
+        })
+        .catch((e) => {
+          alert("Could not display directions due to: " + e);
+        });
+      window.initMap = initMap;
+    }
+
+    // 드래그앤 드랍 함수
+    var draggables = document.querySelectorAll(".container .draggable");
+    var containers = document.querySelectorAll(".container");
+
+    function dragcall() {
+      console.log("dragcall() 실행");
+      draggables = document.querySelectorAll(".container .draggable");
+      containers = document.querySelectorAll(".container");
+      console.log("draggables.length===>" + draggables.length);
+    }
+
+
+
+
+    function loop() {
+
+      draggables.forEach(draggable => {
+        console.log("포 이치문 실행");
+        draggable.addEventListener("dragstart", () => { //드래그를 시작하면 발생
+          console.log(("이벤트 리스너 실행"));
+          draggable.classList.add("dragging");       //드래그 시작시 dragging 이라는 class를 추가
+        });
+
+        draggable.addEventListener("dragend", () => { //드래그 종료시 발생
+
+          if ($(".dragging").attr('id') == "Wbefore") {
+            var ddd = $(".dragging").parents().parents().attr('id');
+            console.log(ddd);
+
+            var nnn = $(".dragging").children('.card-title');
+            console.log('name:', nnn.text());
+
+            var www = $(".dragging").children('.lat');
+            console.log('name:', www.text());
+
+            var kkk = $(".dragging").children('.lan');
+            console.log('name:', kkk.text());
+
+
+            nnn.attr('id', ddd);
+            www.attr('id', ddd);
+            kkk.attr('id', ddd);
+            console.log($(".dragging").attr('id'));
+            draggable.classList.remove("dragging");   //종료시 dragging을 삭제
+            setNum();
+            make(t);
+          } else {
+            var ddd = $(".dragging").parents().parents().attr('id');
+            console.log(ddd);
+
+            var nnn = $(".dragging").children('.card-weather');
+            console.log('name:', nnn.text());
+
+            var www = $(".dragging").children('.lat-weather');
+            console.log('name:', www.text());
+
+            var kkk = $(".dragging").children('.lan-weather');
+            console.log('name:', kkk.text());
+
+            nnn.attr('id', ddd);
+            www.attr('id', ddd);
+            kkk.attr('id', ddd);
+            console.log($(".dragging").attr('id'));
+            draggable.classList.remove("dragging");   //종료시 dragging을 삭제
+            setNum();
+            make2(t);
+          }
+        });
+      });
+
+    }
+
+    loop()
+
+
+    function setNum() {
+      $("input[name='num']").each(function () {
+        console.log($(this).parent().children().length - 2);
+        $(this).val($(this).parent().children().length - 2);
+      });
+    }
+
+
+
+    containers.forEach(container => {
+      container.addEventListener("dragover", e => {  //드래그한 요소가 container위에 있으면 이벤트 발생
+        e.preventDefault();
+        const afterElement = getDragAfterElement(container, e.clientY);
+        const draggable = document.querySelector(".dragging");
+        if (afterElement === undefined) {
+          console.log(draggable);
+          container.appendChild(draggable); //container 자식으로 넣어준다
+
+        } else {
+          container.insertBefore(draggable, afterElement); //부모노드의 afterElement 노드 앞에 draggable 노드를 삽입
+        }
+      });
+    });
+
+    function getDragAfterElement(container, y) {
+      const draggableElements = [
+        ...container.querySelectorAll(".draggable:not(.dragging)"),
+      ];
+
+      return draggableElements.reduce(
+        (closest, child) => {
+          const box = child.getBoundingClientRect();
+          const offset = y - box.top - box.height / 2;
+          if (offset < 0 && offset > closest.offset) {
+            return { offset: offset, element: child };
+          } else {
+            return closest;
+          }
+        },
+        { offset: Number.NEGATIVE_INFINITY },
+      ).element;
+    }
+    setNum();
+
+
+    $(document).ready(function () {
+      document.getElementsByClassName("spans")[0].click();
+    });
+
+  </script>
+
+  <!-- 여행지 삭제 -->
+  <script>
+    function removePlace(t) {
+      let deleteTag = t.parentElement;
+      console.log(deleteTag);
+      deleteTag.remove();
+
+      let placeName1 = $(t).nextAll('input[name=placeId]').val();
+      console.log(placeName1);
+
+      let checkpo = $('[class="container"][name="pastebi"]').find('[name="placeId"][value=' + placeName1 + ']').parent();
+      console.log(checkpo);
+      checkpo.remove();
+
+      setNum();
+    }
+
+
+    function removebi(t) {
+
+      let deleteTag = t.parentElement;
+      console.log(deleteTag);
+      deleteTag.remove();
+
+      let placeName1 = $(t).nextAll('input[name=placeId]').val();
+      console.log(placeName1);
+
+      let checkpo = $('[class="container"][name="pastehea"]').find('[name="placeId"][value=' + placeName1 + ']').parent();
+      console.log(checkpo);
+      checkpo.remove();
+
+      setNum();
+
+    }
+  </script>
+</body>
+
+</html>

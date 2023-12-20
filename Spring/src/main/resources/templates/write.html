@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://summernote.org"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+    <!-- 구글 한글 폰트 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Black+And+White+Picture&family=Black+Han+Sans&family=Orbit&display=swap"
+        rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Black+And+White+Picture&family=Black+Han+Sans&family=Gugi&family=Orbit&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Black+And+White+Picture&family=Black+Han+Sans&family=Gugi&family=Orbit&display=swap"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+    <title>글짓기</title>
+    <script th:inline="javascript">
+        function backToList(frm) {
+            frm.action = /*[[@{/board/list}]]*/
+                frm.submit();
+        }
+
+        function addGo(frm) {
+            frm.action = /*[[@{/board/addArticle}]]*/
+                frm.submit();
+        }
+
+        $(document).ready(function () {
+
+
+            console.log('여기1');
+
+
+            $('#i_content').val("");
+            $('#i_content').summernote({
+                lang: 'ko-KR',
+                height: 500,
+                minHeight: null,
+                maxHeight: null,
+                focus: true,
+                placeholder: '글을 작성 해주세요...',
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['fontname', ['fontname']],
+                    ['fontsize', ['fontsize']],
+                    ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                    ['color', ['forecolor', 'color']],
+                    ['table', ['table']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['insert', ['picture', 'link', 'video']],
+                    ['view', ['fullscreen', 'help']]
+                ],
+                fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
+                fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
+                callbacks: {	//여기 부분이 이미지를 첨부하는 부분
+                    onImageUpload: function (files, editor) {
+
+                        console.log(files);
+
+                        console.log('여기2');
+
+                        uploadSummernoteImageFile(files[0], this);
+
+                        console.log('여기5');
+                    },
+                    onPaste: function (e) {
+
+                        console.log('여기4');
+
+                        var clipboardData = e.originalEvent.clipboardData;
+                        if (clipboardData && clipboardData.items && clipboardData.items.length) {
+                            var item = clipboardData.items[0];
+                            if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+                                e.preventDefault();
+                            }
+                        }
+                    }
+                }
+            });
+        });
+        function uploadSummernoteImageFile(file, editor) {
+
+
+            console.log('여기3');
+
+
+            data = new FormData();
+            data.append("file", file);
+            console.log(data);
+            var endData = $.ajax({
+                data: data,
+                type: "POST",
+                url: "/board/uploadSummernoteImageFile",
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    //항상 업로드된 파일의 url이 있어야 한다.
+                    $(editor).summernote('insertImage', data.url);
+                    console.log("data.url");
+                    console.log(data.url);
+
+                }
+
+            }
+            );
+
+            console.log(endData);
+
+            console.log('hello1');
+        }
+
+    </script>
+    <style>
+        .class-caption {
+            width: 100px;
+        }
+
+        .class-content {
+            width: 500px;
+        }
+
+        body {
+            font-family: 'Jua', sans-serif;
+
+            background-color: #b8e2f2cc;
+
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-family: 'Black Han Sans', sans-serif;
+            font-size: 450%;
+            text-align: center;
+            color: #fcfdfc;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            font-size: 25px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .class-caption {
+            width: 100px;
+        }
+
+        .class-content {
+            font-family: 'Jua', sans-serif;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn-save {
+            background-color: #2d76e4;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-back {
+            background-color: #4aa7e9;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1 style="text-align: center;">추억 저장소</h1>
+    <div class="container">
+        <form name="articleForm" method="post">
+            <input type="hidden" name="tabtitle" th:value="${tab}">
+            <div class="form-group">
+                <label for="i_title" class="class-caption">제목</label>
+                <input type="text" maxlength="100" name="i_title" class="form-control class-content" id="i_title">
+            </div>
+            <div class="form-group">
+                <label for="i_content" class="class-caption">추억공유</label>
+                <textarea id="i_content" name="i_content" class="form-control class-content summernote"></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-save" onclick="addGo(articleForm)">저장</button>
+                <button type="button" class="btn btn-back" onclick="backToList(articleForm)">목록보기</button>
+            </div>
+            </th:form>
+    </div>
+
+
+    <input type="hidden" id="loginUserId" th:value="${loginUser}">
+    <script src="/js/pushAlarm.js"></script>
+
+</body>
+
+</html>
