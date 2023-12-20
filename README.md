@@ -75,7 +75,7 @@
   + [Google Codelabs](https://codelabs.developers.google.com/)
   + [android-maps-compose](https://googlemaps.github.io/android-maps-compose/index.html)
   + [Material Design](https://m3.material.io/)
-  + [Android 개발자를 위한 Jetpack Compose(https://developer.android.com/courses/jetpack-compose/course?hl=ko)
+  + [Android 개발자를 위한 Jetpack Compose](https://developer.android.com/courses/jetpack-compose/course?hl=ko)
   + [Places SDK for Android](https://developers.google.com/maps/documentation/places/android-sdk/overview?hl=ko)
   + [Geocoding API](https://developers.google.com/maps/documentation/geocoding/overview?hl=ko)
   + [Directions API](https://developers.google.com/maps/documentation/directions/overview?hl=ko)
