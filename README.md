@@ -8,8 +8,6 @@
 - [idgod8451](https://github.com/idgod8451) : 백엔드 개발, 프론트엔드 개발, 서버 구축
 - [NoelWON](https://github.com/NoelWON) : 백엔드 개발, 프론트엔드 개발, 데이터베이스 구축
 - [jiman28](https://github.com/jiman28) : 백엔드 개발, 안드로이드 개발
-#### Demonstration Video
-- https://drive.google.com/file/d/15BRrBIHSfSPXBAsYwlD1Qxs_opiFTvps/view?usp=sharing
 #### Awards
 - '2023년 벤처·스타트업 아카데미 통합 프로젝트 발표회' 최우수상 수상
 ![project_result](./z_imgs/project_result.jpg)
